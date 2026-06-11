@@ -1,0 +1,31 @@
+{
+  "name": "ai-os-wiki-cli",
+  "version": "0.1.0",
+  "description": "Local CLI for connecting projects to an Obsidian-based AI OS / LLM Wiki.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "bin": {
+    "ai-os": "./bin/ai-os.mjs"
+  },
+  "files": [
+    "bin/",
+    "scripts/",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "check": "node bin/ai-os.mjs --help && node bin/ai-os.mjs setup --help && node bin/ai-os.mjs connect-project --help && node bin/ai-os.mjs record-issue --help && node bin/ai-os.mjs setup --dry-run",
+    "install:local": "scripts/install-local.sh",
+    "pack:dry-run": "npm pack --dry-run"
+  },
+  "keywords": [
+    "obsidian",
+    "llm",
+    "wiki",
+    "ai-os",
+    "codex",
+    "claude"
+  ]
+}
