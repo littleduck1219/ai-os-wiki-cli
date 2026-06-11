@@ -75,7 +75,7 @@ Options:
   --project-slug   Folder slug, defaults to a slugified project name
   --project-path   Local repo/project path, defaults to current working directory
   --dry-run        Print actions without writing files
-  --force          Overwrite existing generated wiki/pointer files
+  --force          Overwrite existing generated wiki files
 `);
 }
 
@@ -102,7 +102,7 @@ Options:
   --project-slug   Folder slug, e.g. "vm-migrator"
   --project-path   Local repo/project path to receive pointer files and .gitignore rules
   --dry-run        Print actions without writing files
-  --force          Overwrite existing generated wiki/pointer files
+  --force          Overwrite existing generated wiki files
 `);
 }
 
@@ -295,14 +295,12 @@ function buildProjectWrites(context) {
     [path.join(p, "90 Operations", "Issues", `📕 ${slug} Issue Map.md`), issueMap(n, slug)],
     [path.join(p, "90 Operations", "Issues", "00 Issue Rules", `📗 ${slug} Installation Issues.md`), issueCategory(n, slug)],
     [path.join(p, "90 Operations", "Issues", "10 Issue Records", `📕 ${slug} Issue Records.md`), issueRecords(n, slug)],
-    [path.join(context.projectPath, "CODEX.md"), pointerDoc("Codex", n, p)],
-    [path.join(context.projectPath, "CLAUDE.md"), pointerDoc("Claude", n, p)],
-    [path.join(context.projectPath, "GEMINI.md"), pointerDoc("Gemini", n, p)],
   ]);
 }
 
 function buildProjectUpdates(context) {
   return [
+    () => upsertPointerDocs(context),
     () => appendGitignore(context),
     () => appendManagedProject(context),
   ];
@@ -530,7 +528,9 @@ function issueRecords(name, slug) {
 }
 
 function pointerDoc(tool, name, projectRoot) {
-  return `# ${tool} Project Pointer
+  const markerName = tool.toUpperCase();
+  return `<!-- AI_OS_WIKI_POINTER:${markerName}:START -->
+## AI OS Wiki Pointer
 
 This repository uses the Obsidian AI OS wiki as the long-term project memory.
 
@@ -550,6 +550,7 @@ Issue behavior:
 - If you cannot write the issue note, explicitly say why in the final response.
 
 Do not treat this file as the long-term memory store. It is only a pointer into Obsidian.
+<!-- AI_OS_WIKI_POINTER:${markerName}:END -->
 `;
 }
 
@@ -637,6 +638,40 @@ function appendGitignore(context) {
   writeFile(file, next, { ...context, force: true });
 }
 
+function upsertPointerDocs(context) {
+  const pointers = [
+    ["CODEX.md", "Codex"],
+    ["CLAUDE.md", "Claude"],
+    ["GEMINI.md", "Gemini"],
+  ];
+
+  for (const [fileName, tool] of pointers) {
+    const file = path.join(context.projectPath, fileName);
+    const content = pointerDoc(tool, context.projectName, context.projectRoot);
+    upsertManagedBlock(file, content, `AI_OS_WIKI_POINTER:${tool.toUpperCase()}`, context);
+  }
+}
+
+function upsertManagedBlock(file, block, marker, context) {
+  if (context.dryRun) {
+    console.log(`[dry-run] upsert ${file} ${marker}`);
+    return;
+  }
+
+  const current = fs.existsSync(file) ? fs.readFileSync(file, "utf8") : "";
+  const start = `<!-- ${marker}:START -->`;
+  const end = `<!-- ${marker}:END -->`;
+  const pattern = new RegExp(`${escapeRegExp(start)}[\\s\\S]*?${escapeRegExp(end)}\\n?`);
+  const normalizedBlock = block.endsWith("\n") ? block : `${block}\n`;
+  const next = current.includes(start) && current.includes(end)
+    ? current.replace(pattern, normalizedBlock)
+    : `${current.trimEnd()}${current.trimEnd() ? "\n\n" : ""}${normalizedBlock}`;
+
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, next, "utf8");
+  console.log(fs.existsSync(file) && current ? `[update] ${file}` : `[write] ${file}`);
+}
+
 function appendManagedProject(context) {
   const file = path.join(context.vault, AI_OS_DIR, "📕 AI OS Managed Projects.md");
   if (!fs.existsSync(file)) return;
@@ -687,6 +722,10 @@ function toCamel(value) {
 
 function toKebab(value) {
   return value.replace(/[A-Z]/g, (char) => `-${char.toLowerCase()}`);
+}
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function inferProjectName(projectPath) {

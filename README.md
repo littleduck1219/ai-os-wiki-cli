@@ -92,6 +92,8 @@ node bin/ai-os.mjs connect-project \
   - `GEMINI.md`
 - `.gitignore` entries for AI Wiki/session pointer files
 
+If `CODEX.md`, `CLAUDE.md`, or `GEMINI.md` already exists, the CLI preserves the existing content and only appends or updates a marked `AI OS Wiki Pointer` block.
+
 ## Record An Issue
 
 Use `record-issue` when an AI session receives an error, screenshot, install failure, field issue, or log.
