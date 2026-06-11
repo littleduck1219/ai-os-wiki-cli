@@ -290,6 +290,7 @@ function buildProjectWrites(context) {
     [path.join(p, "20 Shared Assets", `📕 ${slug} Assets.md`), sharedHub(n, slug)],
     [path.join(p, "90 Operations", `📕 ${slug} Operations.md`), operationsHub(n, slug)],
     [path.join(p, "90 Operations", `📗 ${slug} Active Context.md`), activeContext(n, slug, repo)],
+    [path.join(p, "90 Operations", `📗 ${slug} Runbook.md`), runbook(n, slug, repo)],
     [path.join(p, "90 Operations", `📗 ${slug} Decision Log.md`), decisionLog(n, slug)],
     [path.join(p, "90 Operations", `📗 ${slug} Session Brief.md`), sessionBrief(n, slug, repo)],
     [path.join(p, "90 Operations", "Issues", `📕 ${slug} Issue Map.md`), issueMap(n, slug)],
@@ -392,6 +393,7 @@ function operationsHub(name, slug) {
 ## Documents
 
 - [[📗 ${slug} Active Context]]
+- [[📗 ${slug} Runbook]]
 - [[📗 ${slug} Decision Log]]
 - [[📗 ${slug} Session Brief]]
 - [[📕 ${slug} Issue Map]]
@@ -411,6 +413,7 @@ function activeContext(name, slug, repo) {
 - 기능 축 허브: \`📕 ${slug} Features\`
 - 공통 자산 허브: \`📕 ${slug} Assets\`
 - 운영 축 허브: \`📕 ${slug} Operations\`
+- 실행 런북: \`📗 ${slug} Runbook\`
 
 ## Current State
 
@@ -423,6 +426,98 @@ function activeContext(name, slug, repo) {
 ## Next Steps
 
 1.
+`);
+}
+
+function runbook(name, slug, repo) {
+  return note(`📗 ${slug} Runbook`, `[[📕 ${slug} Operations]]`, ["ai-os", "llm-wiki", "project", slug, "runbook", "operation"], `# ${slug} Runbook
+
+${name} 프로젝트를 설치, 실행, 검증하기 위한 운영 런북이다.
+
+## Environment
+
+- Repo: \`${repo}\`
+- Runtime:
+- Package Manager:
+- Required Services:
+- Required Environment Files:
+  - \`.env\`
+  - \`.env.local\`
+
+## First-Time Setup
+
+\`\`\`bash
+# package install command
+\`\`\`
+
+## Local Development
+
+\`\`\`bash
+# local dev server command
+\`\`\`
+
+## Build
+
+\`\`\`bash
+# production build command
+\`\`\`
+
+## Test And Quality
+
+\`\`\`bash
+# test command
+# lint command
+# typecheck command
+\`\`\`
+
+## Database
+
+- Engine:
+- Local startup:
+- Migration:
+- Seed:
+
+\`\`\`bash
+# database command
+\`\`\`
+
+## Docker
+
+- Compose file:
+- Services:
+
+\`\`\`bash
+# docker compose command
+\`\`\`
+
+## Service Startup Order
+
+1. Required infrastructure:
+2. Database / cache:
+3. Backend:
+4. Frontend:
+5. Workers / schedulers:
+
+## Ports
+
+- Frontend:
+- Backend API:
+- Database:
+- Other:
+
+## Common Runtime Issues
+
+### Issue Title
+
+- Symptom:
+- Error Signature:
+- Check:
+- Fix:
+
+## Notes For New AI Sessions
+
+- Before changing code, read this Runbook and verify how the project is installed and executed.
+- If a command fails, record the failure under \`90 Operations/Issues/10 Issue Records\` when it represents a reusable project issue.
 `);
 }
 
@@ -461,6 +556,7 @@ function sessionBrief(name, slug, repo) {
 3. \`${path.join(repo, "GEMINI.md")}\`
 4. \`${path.join("60.AI OS/Projects", slug, `📒 ${slug} Index.md`)}\`
 5. \`📗 ${slug} Active Context\`
+6. \`📗 ${slug} Runbook\`
 
 ## Issue Behavior
 
@@ -538,6 +634,7 @@ Mandatory: read the project wiki before analyzing or changing behavior.
 
 - ${path.join(projectRoot, `📒 ${path.basename(projectRoot)} Index.md`)}
 - ${path.join(projectRoot, "90 Operations", `📗 ${path.basename(projectRoot)} Active Context.md`)}
+- ${path.join(projectRoot, "90 Operations", `📗 ${path.basename(projectRoot)} Runbook.md`)}
 - ${path.join(projectRoot, "90 Operations", `📗 ${path.basename(projectRoot)} Session Brief.md`)}
 - ${path.join(projectRoot, "90 Operations", "Issues", `📕 ${path.basename(projectRoot)} Issue Map.md`)}
 - ${path.join(projectRoot, "90 Operations", "Issues", "10 Issue Records", `📕 ${path.basename(projectRoot)} Issue Records.md`)}

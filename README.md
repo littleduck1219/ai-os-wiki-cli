@@ -82,6 +82,11 @@ node bin/ai-os.mjs connect-project \
   - `📕 {project-slug} Features`
   - `📕 {project-slug} Assets`
   - `📕 {project-slug} Operations`
+- Operations documents:
+  - `📗 {project-slug} Active Context`
+  - `📗 {project-slug} Runbook`
+  - `📗 {project-slug} Decision Log`
+  - `📗 {project-slug} Session Brief`
 - Issue structure:
   - `Issues/📕 {project-slug} Issue Map`
   - `Issues/00 Issue Rules/`
