@@ -26,9 +26,22 @@ node bin/ai-os.mjs setup --dry-run
 node bin/ai-os.mjs setup
 ```
 
+처음 사용하는 컴퓨터에서는 Obsidian vault 위치를 먼저 알려준다.
+
+```bash
+ai-os config set-vault --vault "/path/to/obsidian-vault"
+ai-os config show
+```
+
+또는 한 번만 명령에 직접 넘길 수 있다.
+
+```bash
+ai-os setup --vault "/path/to/obsidian-vault" --dry-run
+```
+
 `setup`은 기본적으로 다음 값을 추론한다.
 
-- vault: `AI_OS_VAULT` 환경변수 또는 `/Users/littleduck/littleduck`
+- vault: `--vault`, `AI_OS_VAULT`, 저장된 config, 존재하는 로컬 기본값 순서
 - project path: 현재 작업 폴더
 - project name: `package.json`의 `name` 또는 폴더명
 - project slug: project name을 slug로 변환한 값

@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 
 const AI_OS_DIR = "60.AI OS";
 const MANAGED_PROJECTS = "📕 AI OS Managed Projects";
 const DEFAULT_VAULT = "/Users/littleduck/littleduck";
+const CONFIG_DIR = path.join(os.homedir(), ".ai-os-wiki-cli");
+const CONFIG_FILE = path.join(CONFIG_DIR, "config.json");
 const IGNORE_BLOCK = `# AI Wiki / LLM session pointers
 /CODEX.md
 /CLAUDE.md
@@ -33,6 +36,11 @@ function main() {
     return;
   }
 
+  if (command === "config") {
+    configCommand(argv);
+    return;
+  }
+
   if (command === "record-issue") {
     recordIssue(parseArgs(argv));
     return;
@@ -46,10 +54,12 @@ function printMainHelp() {
 
 Usage:
   ai-os setup [--project-name <name>]
+  ai-os config set-vault --vault <path>
   ai-os connect-project --vault <path> --project-name <name> --project-slug <slug> --project-path <repo>
 
 Commands:
   setup             Infer defaults from the current repo and connect it to AI OS
+  config            Save or show AI OS Wiki CLI settings
   connect-project   Create or update an Obsidian project wiki and repo pointer files
   record-issue      Create an issue record note and index it under Issue Records
 `);
@@ -60,12 +70,25 @@ function printSetupHelp() {
   ai-os setup [--vault <path>] [--project-name <name>] [--project-slug <slug>] [--project-path <repo>] [--dry-run] [--force]
 
 Options:
-  --vault          Obsidian vault path, defaults to AI_OS_VAULT or ${DEFAULT_VAULT}
+  --vault          Obsidian vault path. Priority: --vault, AI_OS_VAULT, config, existing local default
   --project-name   Display name, defaults to package.json name or folder name
   --project-slug   Folder slug, defaults to a slugified project name
   --project-path   Local repo/project path, defaults to current working directory
   --dry-run        Print actions without writing files
   --force          Overwrite existing generated wiki/pointer files
+`);
+}
+
+function printConfigHelp() {
+  console.log(`Usage:
+  ai-os config set-vault --vault <path>
+  ai-os config show
+
+Options:
+  --vault          Obsidian vault path to save for future setup commands
+
+Config file:
+  ${CONFIG_FILE}
 `);
 }
 
@@ -81,6 +104,34 @@ Options:
   --dry-run        Print actions without writing files
   --force          Overwrite existing generated wiki/pointer files
 `);
+}
+
+function configCommand(argv) {
+  const [subcommand, ...rest] = argv;
+
+  if (!subcommand || subcommand === "--help" || subcommand === "-h") {
+    printConfigHelp();
+    return;
+  }
+
+  if (subcommand === "show") {
+    console.log(JSON.stringify(readConfig(), null, 2));
+    return;
+  }
+
+  if (subcommand === "set-vault") {
+    const args = parseArgs(rest);
+    if (!args.vault) fail("Missing required option: --vault");
+    const vault = path.resolve(args.vault);
+    if (!fs.existsSync(vault)) fail(`Vault path does not exist: ${vault}`);
+    const config = { ...readConfig(), vault };
+    fs.mkdirSync(CONFIG_DIR, { recursive: true });
+    fs.writeFileSync(CONFIG_FILE, `${JSON.stringify(config, null, 2)}\n`, "utf8");
+    console.log(`saved vault: ${vault}`);
+    return;
+  }
+
+  fail(`Unknown config command: ${subcommand}`);
 }
 
 function printRecordIssueHelp() {
@@ -135,7 +186,7 @@ function setupProject(args) {
   const projectPath = path.resolve(args.projectPath || process.cwd());
   const projectName = args.projectName || inferProjectName(projectPath);
   const projectSlug = args.projectSlug || slugify(projectName);
-  const vault = args.vault || process.env.AI_OS_VAULT || DEFAULT_VAULT;
+  const vault = resolveVault(args);
 
   connectProject({
     ...args,
@@ -151,6 +202,8 @@ function connectProject(args) {
     printConnectHelp();
     return;
   }
+
+  args.vault = resolveVault(args);
 
   for (const key of ["vault", "projectName", "projectSlug", "projectPath"]) {
     if (!args[key]) fail(`Missing required option: --${toKebab(key)}`);
@@ -176,6 +229,8 @@ function recordIssue(args) {
     printRecordIssueHelp();
     return;
   }
+
+  args.vault = resolveVault(args);
 
   for (const key of ["vault", "projectName", "projectSlug", "title", "summary", "errorSignature", "recognitionRule"]) {
     if (!args[key]) fail(`Missing required option: --${toKebab(key)}`);
@@ -647,6 +702,44 @@ function inferProjectName(projectPath) {
     }
   }
   return path.basename(projectPath);
+}
+
+function readConfig() {
+  if (!fs.existsSync(CONFIG_FILE)) return {};
+  try {
+    return JSON.parse(fs.readFileSync(CONFIG_FILE, "utf8"));
+  } catch {
+    fail(`Invalid config file: ${CONFIG_FILE}`);
+  }
+}
+
+function resolveVault(args) {
+  const config = readConfig();
+  const candidates = [
+    args.vault,
+    process.env.AI_OS_VAULT,
+    config.vault,
+    fs.existsSync(DEFAULT_VAULT) ? DEFAULT_VAULT : "",
+  ].filter(Boolean);
+
+  const vault = candidates[0] ? path.resolve(candidates[0]) : "";
+
+  if (!vault) {
+    fail([
+      "Missing Obsidian vault path.",
+      "",
+      "Provide one of:",
+      "  ai-os setup --vault /path/to/vault",
+      "  AI_OS_VAULT=/path/to/vault ai-os setup",
+      "  ai-os config set-vault --vault /path/to/vault",
+    ].join("\n"));
+  }
+
+  if (!fs.existsSync(vault)) {
+    fail(`Vault path does not exist: ${vault}`);
+  }
+
+  return vault;
 }
 
 function slugify(value) {
