@@ -4,6 +4,14 @@
   "description": "Local CLI for connecting projects to an Obsidian-based AI OS / LLM Wiki.",
   "license": "UNLICENSED",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/littleduck1219/ai-os-wiki-cli.git"
+  },
+  "homepage": "https://github.com/littleduck1219/ai-os-wiki-cli#readme",
+  "bugs": {
+    "url": "https://github.com/littleduck1219/ai-os-wiki-cli/issues"
+  },
   "bin": {
     "ai-os": "./bin/ai-os.mjs"
   },

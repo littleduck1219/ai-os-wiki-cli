@@ -101,7 +101,7 @@ This creates a `📘` issue note without a date prefix under `90 Operations/Issu
 GitHub remote를 만든 뒤:
 
 ```bash
-git remote add origin <github-repo-url>
+git remote add origin https://github.com/littleduck1219/ai-os-wiki-cli.git
 git add README.md package.json bin scripts .gitignore
 git commit -m "Initial AI OS wiki CLI"
 git push -u origin main
