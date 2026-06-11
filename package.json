@@ -24,7 +24,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "check": "node bin/ai-os.mjs --help && node bin/ai-os.mjs setup --help && node bin/ai-os.mjs config --help && node bin/ai-os.mjs connect-project --help && node bin/ai-os.mjs record-issue --help && node bin/ai-os.mjs config show && node bin/ai-os.mjs setup --dry-run",
+    "check": "node bin/ai-os.mjs --help && node bin/ai-os.mjs setup --help && node bin/ai-os.mjs config --help && node bin/ai-os.mjs connect-project --help && node bin/ai-os.mjs record-issue --help && node bin/ai-os.mjs config show && node bin/ai-os.mjs setup --project-name ai-os-wiki-cli --project-slug ai-os-wiki-cli --dry-run",
     "install:local": "scripts/install-local.sh",
     "pack:dry-run": "npm pack --dry-run"
   },

@@ -71,7 +71,7 @@ function printSetupHelp() {
 
 Options:
   --vault          Obsidian vault path. Priority: --vault, AI_OS_VAULT, config, existing local default
-  --project-name   Display name, defaults to package.json name or folder name
+  --project-name   Display name, defaults to the project folder name
   --project-slug   Folder slug, defaults to a slugified project name
   --project-path   Local repo/project path, defaults to current working directory
   --dry-run        Print actions without writing files
@@ -690,17 +690,6 @@ function toKebab(value) {
 }
 
 function inferProjectName(projectPath) {
-  const packageFile = path.join(projectPath, "package.json");
-  if (fs.existsSync(packageFile)) {
-    try {
-      const packageJson = JSON.parse(fs.readFileSync(packageFile, "utf8"));
-      if (typeof packageJson.name === "string" && packageJson.name.trim()) {
-        return packageJson.name.trim();
-      }
-    } catch {
-      // Fall back to the folder name when package.json is not valid JSON.
-    }
-  }
   return path.basename(projectPath);
 }
 

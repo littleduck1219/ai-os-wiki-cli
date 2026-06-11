@@ -43,7 +43,7 @@ ai-os setup --vault "/path/to/obsidian-vault" --dry-run
 
 - vault: `--vault`, `AI_OS_VAULT`, 저장된 config, 존재하는 로컬 기본값 순서
 - project path: 현재 작업 폴더
-- project name: `package.json`의 `name` 또는 폴더명
+- project name: 현재 프로젝트 폴더명
 - project slug: project name을 slug로 변환한 값
 
 로컬에서 `ai-os` 명령으로 실행하려면:
