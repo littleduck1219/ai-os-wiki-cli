@@ -4,7 +4,8 @@ import os from "node:os";
 import path from "node:path";
 
 const AI_OS_DIR = "60.AI OS";
-const MANAGED_PROJECTS = "📕 AI OS Managed Projects";
+const PROJECT_WIKI_CONNECTOR = "📚 515 Project Wiki";
+const PROJECT_WIKI_CONNECTOR_FILE = `${PROJECT_WIKI_CONNECTOR}.md`;
 const DEFAULT_VAULT = "/Users/littleduck/littleduck";
 const CONFIG_DIR = path.join(os.homedir(), ".ai-os-wiki-cli");
 const CONFIG_FILE = path.join(CONFIG_DIR, "config.json");
@@ -303,12 +304,12 @@ function buildProjectUpdates(context) {
   return [
     () => upsertPointerDocs(context),
     () => appendGitignore(context),
-    () => appendManagedProject(context),
+    () => appendProjectWikiConnector(context),
   ];
 }
 
 function projectIndex(name, slug, repo) {
-  return note(`📒 ${slug} Index`, `[[${MANAGED_PROJECTS}]]`, ["ai-os", "llm-wiki", "project", slug, "project-index", "hub"], `# ${slug} Index
+  return note(`📒 ${slug} Index`, `[[${PROJECT_WIKI_CONNECTOR}]]`, ["ai-os", "llm-wiki", "project", slug, "project-index", "hub"], `# ${slug} Index
 
 ${name} 프로젝트의 LLM Wiki 인덱스다.
 
@@ -769,10 +770,10 @@ function upsertManagedBlock(file, block, marker, context) {
   console.log(fs.existsSync(file) && current ? `[update] ${file}` : `[write] ${file}`);
 }
 
-function appendManagedProject(context) {
-  const file = path.join(context.vault, AI_OS_DIR, "📕 AI OS Managed Projects.md");
+function appendProjectWikiConnector(context) {
+  const file = path.join(context.vault, "10.Guideline", "connector", PROJECT_WIKI_CONNECTOR_FILE);
   if (!fs.existsSync(file)) return;
-  const link = `[[Projects/${context.projectSlug}/📒 ${context.projectSlug} Index|📒 ${context.projectSlug} Index]]`;
+  const link = `[[${AI_OS_DIR}/Projects/${context.projectSlug}/📒 ${context.projectSlug} Index|📒 ${context.projectSlug} Index]]`;
   const current = fs.readFileSync(file, "utf8");
   if (current.includes(link)) return;
   writeFile(file, `${current.trimEnd()}\n- ${link}\n`, { ...context, force: true });
