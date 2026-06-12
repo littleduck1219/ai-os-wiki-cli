@@ -77,8 +77,8 @@ node bin/ai-os.mjs connect-project \
 ## What It Creates
 
 - Obsidian project wiki under `60.AI OS/Projects/{project-slug}`
-- Project index and three hub documents:
-  - `📒 {project-slug} Index`
+- Project root and three hub documents:
+  - `📒 {project-slug}`
   - `📕 {project-slug} Features`
   - `📕 {project-slug} Assets`
   - `📕 {project-slug} Operations`

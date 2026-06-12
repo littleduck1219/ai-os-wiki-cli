@@ -286,7 +286,7 @@ function buildProjectWrites(context) {
   const repo = context.projectPath;
 
   return new Map([
-    [path.join(p, `📒 ${slug} Index.md`), projectIndex(n, slug, repo)],
+    [path.join(p, `📒 ${slug}.md`), projectIndex(n, slug, repo)],
     [path.join(p, "10 Features and Domains", `📕 ${slug} Features.md`), featureHub(n, slug)],
     [path.join(p, "20 Shared Assets", `📕 ${slug} Assets.md`), sharedHub(n, slug)],
     [path.join(p, "90 Operations", `📕 ${slug} Operations.md`), operationsHub(n, slug)],
@@ -309,9 +309,9 @@ function buildProjectUpdates(context) {
 }
 
 function projectIndex(name, slug, repo) {
-  return note(`📒 ${slug} Index`, `[[${PROJECT_WIKI_CONNECTOR}]]`, ["ai-os", "llm-wiki", "project", slug, "project-index", "hub"], `# ${slug} Index
+  return note(`📒 ${slug}`, `[[${PROJECT_WIKI_CONNECTOR}]]`, ["ai-os", "llm-wiki", "project", slug, "project-root", "hub"], `# ${slug}
 
-${name} 프로젝트의 LLM Wiki 인덱스다.
+${name} 프로젝트의 LLM Wiki 루트 문서다.
 
 ## Ontology Relations
 
@@ -347,7 +347,7 @@ ${name} 프로젝트의 LLM Wiki 인덱스다.
 }
 
 function featureHub(name, slug) {
-  return note(`📕 ${slug} Features`, `[[📒 ${slug} Index]]`, ["ai-os", "llm-wiki", "project", slug, "feature-map", "hub"], `# ${slug} Features
+  return note(`📕 ${slug} Features`, `[[📒 ${slug}]]`, ["ai-os", "llm-wiki", "project", slug, "feature-map", "hub"], `# ${slug} Features
 
 기능, 화면, 도메인 단위의 허브다. 실제 기능 문서는 기능별 하위 폴더에 둔다.
 
@@ -367,7 +367,7 @@ function featureHub(name, slug) {
 }
 
 function sharedHub(name, slug) {
-  return note(`📕 ${slug} Assets`, `[[📒 ${slug} Index]]`, ["ai-os", "llm-wiki", "project", slug, "shared-assets", "asset-map", "hub"], `# ${slug} Assets
+  return note(`📕 ${slug} Assets`, `[[📒 ${slug}]]`, ["ai-os", "llm-wiki", "project", slug, "shared-assets", "asset-map", "hub"], `# ${slug} Assets
 
 여러 기능과 도메인이 공유하는 자산을 관리하는 허브다. 실제 자산 문서는 자산 영역별 하위 폴더에 둔다.
 
@@ -387,7 +387,7 @@ function sharedHub(name, slug) {
 }
 
 function operationsHub(name, slug) {
-  return note(`📕 ${slug} Operations`, `[[📒 ${slug} Index]]`, ["ai-os", "llm-wiki", "project", slug, "operations", "operation", "hub"], `# ${slug} Operations
+  return note(`📕 ${slug} Operations`, `[[📒 ${slug}]]`, ["ai-os", "llm-wiki", "project", slug, "operations", "operation", "hub"], `# ${slug} Operations
 
 현재 상태, 결정 로그, 세션 인계, 이슈 운영 문서를 모으는 허브다.
 
@@ -410,7 +410,7 @@ function activeContext(name, slug, repo) {
 
 ## Structure Snapshot
 
-- 프로젝트 입구: \`📒 ${slug} Index\`
+- 프로젝트 입구: \`📒 ${slug}\`
 - 기능 축 허브: \`📕 ${slug} Features\`
 - 공통 자산 허브: \`📕 ${slug} Assets\`
 - 운영 축 허브: \`📕 ${slug} Operations\`
@@ -555,7 +555,7 @@ function sessionBrief(name, slug, repo) {
 1. \`${path.join(repo, "CODEX.md")}\`
 2. \`${path.join(repo, "CLAUDE.md")}\`
 3. \`${path.join(repo, "GEMINI.md")}\`
-4. \`${path.join("60.AI OS/Projects", slug, `📒 ${slug} Index.md`)}\`
+4. \`${path.join("60.AI OS/Projects", slug, `📒 ${slug}.md`)}\`
 5. \`📗 ${slug} Active Context\`
 6. \`📗 ${slug} Runbook\`
 
@@ -633,7 +633,7 @@ This repository uses the Obsidian AI OS wiki as the long-term project memory.
 
 Mandatory: read the project wiki before analyzing or changing behavior.
 
-- ${path.join(projectRoot, `📒 ${path.basename(projectRoot)} Index.md`)}
+- ${path.join(projectRoot, `📒 ${path.basename(projectRoot)}.md`)}
 - ${path.join(projectRoot, "90 Operations", `📗 ${path.basename(projectRoot)} Active Context.md`)}
 - ${path.join(projectRoot, "90 Operations", `📗 ${path.basename(projectRoot)} Runbook.md`)}
 - ${path.join(projectRoot, "90 Operations", `📗 ${path.basename(projectRoot)} Session Brief.md`)}
@@ -773,7 +773,7 @@ function upsertManagedBlock(file, block, marker, context) {
 function appendProjectWikiConnector(context) {
   const file = path.join(context.vault, "10.Guideline", "connector", PROJECT_WIKI_CONNECTOR_FILE);
   if (!fs.existsSync(file)) return;
-  const link = `[[${AI_OS_DIR}/Projects/${context.projectSlug}/📒 ${context.projectSlug} Index|📒 ${context.projectSlug} Index]]`;
+  const link = `[[${AI_OS_DIR}/Projects/${context.projectSlug}/📒 ${context.projectSlug}|📒 ${context.projectSlug}]]`;
   const current = fs.readFileSync(file, "utf8");
   if (current.includes(link)) return;
   writeFile(file, `${current.trimEnd()}\n- ${link}\n`, { ...context, force: true });
