@@ -23,6 +23,7 @@
     "developerName": "littleduck",
     "category": "Developer Tools",
     "capabilities": [
+      "Instructions",
       "Read",
       "Write"
     ],

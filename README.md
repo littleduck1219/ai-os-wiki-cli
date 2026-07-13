@@ -117,14 +117,15 @@ If `CODEX.md`, `CLAUDE.md`, or `GEMINI.md` already exists, the CLI preserves the
 
 ## Codex Plugin
 
-이 repo에는 Codex에서 `/ai-os-wiki`처럼 호출하기 위한 얇은 플러그인 정의가 포함되어 있다. Codex 앱에서 사용하려면 이 repo가 Codex 플러그인 마켓플레이스 또는 지원되는 플러그인 소스에 등록되어야 한다.
+이 repo에는 Codex 세션마다 자동 적용되는 AI OS Wiki 플러그인 정의가 포함되어 있다. Codex 앱에서 사용하려면 이 repo가 Codex 플러그인 마켓플레이스 또는 지원되는 플러그인 소스에 등록되어야 한다.
 
 ```text
 .codex-plugin/plugin.json
+AGENTS.md
 skills/ai-os-wiki/SKILL.md
 ```
 
-플러그인은 새 로직을 직접 구현하지 않고 `ai-os-wiki-cli`를 호출하도록 Codex에 지시한다.
+핵심은 `AGENTS.md`다. Ponytail처럼 플러그인이 설치되면 매 세션 시작 시 프로젝트의 `.ai-os/CODEX.md` 또는 AI OS pointer를 읽도록 지시한다. `/ai-os-wiki` skill은 수동 연결 요청을 위한 보조 진입점이다.
 
 사용 흐름:
 

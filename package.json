@@ -17,6 +17,7 @@
   },
   "files": [
     ".codex-plugin/",
+    "AGENTS.md",
     "bin/",
     "skills/",
     "scripts/",
