@@ -121,6 +121,7 @@ If `CODEX.md`, `CLAUDE.md`, or `GEMINI.md` already exists, the CLI preserves the
 
 ```text
 .codex-plugin/plugin.json
+.agents/plugins/marketplace.json
 AGENTS.md
 hooks/claude-codex-hooks.json
 hooks/ai-os-wiki-activate.js
@@ -133,8 +134,18 @@ skills/ai-os-wiki/SKILL.md
 사용 흐름:
 
 1. 이 repo를 GitHub에 push한다.
-2. Codex 설정에 이 repo를 git marketplace로 등록한다.
+2. Codex marketplace에 이 repo를 추가한다.
+
+```bash
+codex plugin marketplace add littleduck1219/ai-os-wiki-cli
+```
+
 3. `ai-os-wiki@ai-os-wiki` 플러그인을 활성화한다.
+
+```bash
+codex plugin add ai-os-wiki@ai-os-wiki
+```
+
 4. 새 Codex 세션을 연다. `AGENTS.md` 지시가 자동 적용된다.
 5. 연결할 프로젝트 세션에서 아래처럼 요청한다.
 

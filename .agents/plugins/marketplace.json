@@ -1,0 +1,21 @@
+{
+  "name": "ai-os-wiki",
+  "interface": {
+    "displayName": "AI OS Wiki"
+  },
+  "plugins": [
+    {
+      "name": "ai-os-wiki",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/littleduck1219/ai-os-wiki-cli.git",
+        "ref": "main"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}
