@@ -294,6 +294,8 @@ function buildProjectWrites(context) {
     [path.join(p, "90 Operations", `📗 ${slug} Runbook.md`), runbook(n, slug, repo)],
     [path.join(p, "90 Operations", `📗 ${slug} Decision Log.md`), decisionLog(n, slug)],
     [path.join(p, "90 Operations", `📗 ${slug} Session Brief.md`), sessionBrief(n, slug, repo)],
+    [path.join(p, "90 Operations", "91 Work Records", `📕 ${slug} Work Records.md`), workRecords(n, slug)],
+    [path.join(p, "90 Operations", "92 Follow-ups", `📕 ${slug} Follow-ups.md`), followUps(n, slug)],
     [path.join(p, "90 Operations", "Issues", `📕 ${slug} Issue Map.md`), issueMap(n, slug)],
     [path.join(p, "90 Operations", "Issues", "00 Issue Rules", `📗 ${slug} Installation Issues.md`), issueCategory(n, slug)],
     [path.join(p, "90 Operations", "Issues", "10 Issue Records", `📕 ${slug} Issue Records.md`), issueRecords(n, slug)],
@@ -327,7 +329,7 @@ ${name} 프로젝트의 LLM Wiki 루트 문서다.
 - root: 프로젝트 입구 문서만 둔다.
 - \`10 Features and Domains/\`: 기능, 화면, 도메인 허브와 기능별 하위 폴더
 - \`20 Shared Assets/\`: 공통 자산 허브와 자산 영역별 하위 폴더
-- \`90 Operations/\`: 운영 허브, 상태, 결정, 세션 인계, 이슈 문서
+- \`90 Operations/\`: 운영 허브, 상태, 실행, 결정, 세션 인계, 이슈, 작업 기록, 후속 수정거리
 
 ## Project Hubs
 
@@ -389,15 +391,34 @@ function sharedHub(name, slug) {
 function operationsHub(name, slug) {
   return note(`📕 ${slug} Operations`, `[[📒 ${slug}]]`, ["ai-os", "llm-wiki", "project", slug, "operations", "operation", "hub"], `# ${slug} Operations
 
-현재 상태, 결정 로그, 세션 인계, 이슈 운영 문서를 모으는 허브다.
+현재 상태, 실행 기준, 결정 로그, 세션 인계, 이슈 운영, 작업 기록, 후속 수정거리를 모으는 운영 허브다.
 
-## Documents
+이 문서는 \`90 Operations/\`의 상위 인덱스다. 운영 루트에 새 문서를 만들면 반드시 아래의 적절한 섹션에 연결한다.
+
+## Current State
 
 - [[📗 ${slug} Active Context]]
-- [[📗 ${slug} Runbook]]
-- [[📗 ${slug} Decision Log]]
 - [[📗 ${slug} Session Brief]]
+
+## Execution
+
+- [[📗 ${slug} Runbook]]
+
+## Decisions
+
+- [[📗 ${slug} Decision Log]]
+
+## Issues
+
 - [[📕 ${slug} Issue Map]]
+
+## Work Records
+
+- [[📕 ${slug} Work Records]]
+
+## Follow-ups
+
+- [[📕 ${slug} Follow-ups]]
 `);
 }
 
@@ -415,6 +436,8 @@ function activeContext(name, slug, repo) {
 - 공통 자산 허브: \`📕 ${slug} Assets\`
 - 운영 축 허브: \`📕 ${slug} Operations\`
 - 실행 런북: \`📗 ${slug} Runbook\`
+- 작업 기록 허브: \`📕 ${slug} Work Records\`
+- 후속 수정거리 허브: \`📕 ${slug} Follow-ups\`
 
 ## Current State
 
@@ -434,6 +457,17 @@ function runbook(name, slug, repo) {
   return note(`📗 ${slug} Runbook`, `[[📕 ${slug} Operations]]`, ["ai-os", "llm-wiki", "project", slug, "runbook", "operation"], `# ${slug} Runbook
 
 ${name} 프로젝트를 설치, 실행, 검증하기 위한 운영 런북이다.
+
+> [!IMPORTANT]
+> 프로젝트 연결은 이 파일을 생성하는 것으로 끝나지 않는다. 연결을 수행한 AI는 실제 repo를 분석해 아래 항목을 채워야 하며, 확인하지 못한 값은 추측하지 않고 \`미확인\`으로 표시한다.
+
+## Initialization Requirement
+
+- package manager와 lockfile을 확인한다.
+- 설치, 로컬 실행, 빌드, 테스트 명령을 실제 설정 파일에서 확인한다.
+- DB, cache, queue, Docker 사용 여부와 기동 순서를 확인한다.
+- 사용 포트와 필수 환경 파일을 확인한다.
+- Runbook의 필수 항목이 비어 있으면 프로젝트 연결이 완료된 것으로 간주하지 않는다.
 
 ## Environment
 
@@ -562,6 +596,60 @@ function sessionBrief(name, slug, repo) {
 ## Issue Behavior
 
 이슈, 설치 장애, 현장 에러, 스크린샷 분석을 전달받으면 답변으로 끝내지 않고 \`90 Operations/Issues/10 Issue Records\` 아래에 이슈 노트를 생성하고 Issue Map에 인덱싱한다.
+
+## Project Connection Behavior
+
+이 프로젝트가 AI OS Wiki에 새로 연결되었고 Runbook에 빈 항목이 있으면, 코드 수정 전에 repo 구조와 설정 파일을 분석해 설치, 실행, 빌드, 테스트, DB, Docker, 포트 정보를 Runbook에 작성한다. Runbook 작성이 끝나기 전에는 위키 초기화가 완료된 것으로 간주하지 않는다.
+
+## Work Record Behavior
+
+작업 이력, 변경 내역, 분석 로그처럼 기능 문서·공유 자산·운영 기준 문서로 분리하기 애매한 기록은 \`90 Operations/91 Work Records/{Work Unit}/\` 아래에 만들고 \`📕 ${slug} Work Records\`에 인덱싱한다. \`90 Operations\` 루트에는 기준 문서와 허브 문서만 둔다.
+
+## Follow-up Behavior
+
+개발·배포·운영 중 새로 발견한 수정거리는 \`90 Operations/92 Follow-ups/\` 아래에 별도 노트로 만들고 \`📕 ${slug} Follow-ups\`에 인덱싱한다. 심각한 장애나 재사용 가능한 버그는 \`Issues/10 Issue Records\`에도 승격한다.
+`);
+}
+
+function workRecords(name, slug) {
+  return note(`📕 ${slug} Work Records`, `[[📕 ${slug} Operations]]`, ["ai-os", "llm-wiki", "project", slug, "work-records", "operation", "hub"], `# ${slug} Work Records
+
+기능 문서나 운영 기준 문서로 분리하기 애매한 실제 작업 기록을 모으는 허브다.
+
+작업 기록은 프로젝트 상태를 설명하는 보조 문서이며, 현재 진행 상태는 [[📗 ${slug} Active Context]], 반복 실행 방법은 [[📗 ${slug} Runbook]], 중요한 설계·운영 결정은 [[📗 ${slug} Decision Log]]에 남긴다.
+
+## Folder Rule
+
+- 실제 작업 기록은 \`90 Operations/91 Work Records/{Work Unit}/\` 아래에 둔다.
+- \`91 Work Records/\` 루트에는 이 Work Records 허브만 둔다.
+- \`90 Operations/\` 루트에는 Operations, Active Context, Runbook, Decision Log, Session Brief 같은 기준 문서만 둔다.
+- 새 작업 단위 폴더나 기록 문서를 만들면 반드시 이 문서의 \`Records\` 섹션에 연결한다.
+
+## Records
+
+-
+`);
+}
+
+function followUps(name, slug) {
+  return note(`📕 ${slug} Follow-ups`, `[[📕 ${slug} Operations]]`, ["ai-os", "llm-wiki", "project", slug, "follow-up", "operation", "hub"], `# ${slug} Follow-ups
+
+개발, 배포, 운영 중 발견한 나중에 처리할 수정거리를 모으는 허브다.
+
+## Rule
+
+- 새 수정거리는 \`90 Operations/92 Follow-ups/📗 {Follow-up Title}.md\`로 별도 노트를 만든다.
+- 발견한 작업 기록이나 배포 기록에는 이 Follow-up 노트 링크만 남긴다.
+- 바로 고쳐야 하는 장애나 재사용 가능한 버그는 \`90 Operations/Issues/10 Issue Records/\`에도 이슈로 승격한다.
+- 설계나 운영 기준이 바뀌면 \`📗 ${slug} Decision Log\`에도 남긴다.
+
+## Pending
+
+-
+
+## Done
+
+-
 `);
 }
 
@@ -648,6 +736,13 @@ Issue behavior:
 - If you cannot write the issue note, explicitly say why in the final response.
 
 Do not treat this file as the long-term memory store. It is only a pointer into Obsidian.
+
+Project connection requirement:
+
+- When this repository is newly connected to AI OS Wiki, inspect the repository and populate the Runbook automatically.
+- The Runbook must cover installation, local execution, build, test, database, Docker or required services, ports, and required environment files.
+- Do not leave generated placeholders blank. Mark unverified values as \`Unverified\` instead of guessing.
+- Wiki initialization is incomplete until the Runbook is populated.
 <!-- AI_OS_WIKI_POINTER:${markerName}:END -->
 `;
 }

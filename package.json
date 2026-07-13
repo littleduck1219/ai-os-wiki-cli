@@ -16,7 +16,9 @@
     "ai-os": "./bin/ai-os.mjs"
   },
   "files": [
+    ".codex-plugin/",
     "bin/",
+    "skills/",
     "scripts/",
     "README.md"
   ],

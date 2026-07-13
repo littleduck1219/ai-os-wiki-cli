@@ -19,6 +19,13 @@ npx ai-os-wiki-cli setup --dry-run
 npx ai-os-wiki-cli setup
 ```
 
+GitHub에서 바로 실행하려면:
+
+```bash
+npx github:littleduck1219/ai-os-wiki-cli setup --dry-run
+npx github:littleduck1219/ai-os-wiki-cli setup
+```
+
 현재 폴더를 AI OS 위키에 연결하려면 `setup`을 사용한다.
 
 ```bash
@@ -87,6 +94,13 @@ node bin/ai-os.mjs connect-project \
   - `📗 {project-slug} Runbook`
   - `📗 {project-slug} Decision Log`
   - `📗 {project-slug} Session Brief`
+  - `91 Work Records/📕 {project-slug} Work Records`
+  - `92 Follow-ups/📕 {project-slug} Follow-ups`
+
+The Runbook is mandatory for every connected project. After connection, the AI must inspect the repository and populate installation, execution, build, test, database, Docker/services, ports, and environment-file information. A generated Runbook containing blank placeholders does not count as completed wiki initialization.
+
+`📕 {project-slug} Operations` is the top-level operations index. Keep reusable state, run, decision, session, issue, work-record, and follow-up sections linked from it. Do not place ad hoc work logs directly in `90 Operations/`; put them under `90 Operations/91 Work Records/{Work Unit}/` and index the work unit or record in `📕 {project-slug} Work Records`. Put newly discovered future fixes under `90 Operations/92 Follow-ups/` and index them in `📕 {project-slug} Follow-ups`.
+
 - Issue structure:
   - `Issues/📕 {project-slug} Issue Map`
   - `Issues/00 Issue Rules/`
@@ -98,6 +112,39 @@ node bin/ai-os.mjs connect-project \
 - `.gitignore` entries for AI Wiki/session pointer files
 
 If `CODEX.md`, `CLAUDE.md`, or `GEMINI.md` already exists, the CLI preserves the existing content and only appends or updates a marked `AI OS Wiki Pointer` block.
+
+## Codex Plugin
+
+이 repo에는 Codex에서 `/ai-os-wiki`처럼 호출하기 위한 얇은 플러그인이 포함되어 있다.
+
+```text
+.codex-plugin/plugin.json
+skills/ai-os-wiki/SKILL.md
+```
+
+플러그인은 새 로직을 직접 구현하지 않고 `ai-os-wiki-cli`를 호출하도록 Codex에 지시한다.
+
+사용 흐름:
+
+1. 이 repo를 GitHub에 push한다.
+2. Codex에서 이 repo를 플러그인으로 설치한다.
+3. 연결할 프로젝트 세션에서 아래처럼 요청한다.
+
+```text
+/ai-os-wiki 이 프로젝트를 AI OS Wiki에 연결해줘
+```
+
+플러그인이 사용하는 기본 명령:
+
+```bash
+ai-os setup
+```
+
+로컬 `ai-os` 명령이 없으면:
+
+```bash
+npx github:littleduck1219/ai-os-wiki-cli setup
+```
 
 ## Record An Issue
 

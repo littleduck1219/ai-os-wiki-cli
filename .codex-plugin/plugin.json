@@ -1,0 +1,35 @@
+{
+  "name": "ai-os-wiki",
+  "version": "0.1.0",
+  "description": "Connect the current project to the Obsidian AI OS Wiki through ai-os-wiki-cli.",
+  "author": {
+    "name": "littleduck"
+  },
+  "homepage": "https://github.com/littleduck1219/ai-os-wiki-cli",
+  "repository": "https://github.com/littleduck1219/ai-os-wiki-cli",
+  "license": "UNLICENSED",
+  "keywords": [
+    "obsidian",
+    "wiki",
+    "ai-os",
+    "codex",
+    "project-memory"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "AI OS Wiki",
+    "shortDescription": "Connect projects to an Obsidian AI OS Wiki",
+    "longDescription": "Use AI OS Wiki to create or update project wiki structure, repo pointer files, runbooks, issue records, work records, and follow-ups through the ai-os-wiki-cli.",
+    "developerName": "littleduck",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "이 프로젝트를 AI OS Wiki에 연결해줘",
+      "이 프로젝트 위키를 초기화해줘"
+    ],
+    "brandColor": "#22C55E"
+  }
+}
