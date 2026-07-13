@@ -1,0 +1,8 @@
+name: ai-os-wiki
+version: 0.1.0
+description: Always-on Obsidian AI OS Wiki project memory for Codex, with CLI-backed project connection.
+author: littleduck
+provides_commands:
+  - ai-os-wiki
+provides_skills:
+  - ai-os-wiki

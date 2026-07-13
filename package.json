@@ -19,6 +19,7 @@
     ".codex-plugin/",
     "AGENTS.md",
     "bin/",
+    "plugin.yaml",
     "skills/",
     "scripts/",
     "README.md"
