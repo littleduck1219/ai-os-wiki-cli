@@ -122,10 +122,13 @@ If `CODEX.md`, `CLAUDE.md`, or `GEMINI.md` already exists, the CLI preserves the
 ```text
 .codex-plugin/plugin.json
 AGENTS.md
+hooks/claude-codex-hooks.json
+hooks/ai-os-wiki-activate.js
+commands/ai-os-wiki.toml
 skills/ai-os-wiki/SKILL.md
 ```
 
-핵심은 `AGENTS.md`다. Ponytail처럼 플러그인이 설치되면 매 세션 시작 시 프로젝트의 `.ai-os/CODEX.md` 또는 AI OS pointer를 읽도록 지시한다. `/ai-os-wiki` skill은 수동 연결 요청을 위한 보조 진입점이다.
+핵심은 `hooks/claude-codex-hooks.json`다. Ponytail처럼 플러그인이 설치되면 SessionStart hook이 `AGENTS.md`를 세션 컨텍스트로 주입한다. `/ai-os-wiki` command와 skill은 수동 연결 요청을 위한 보조 진입점이다.
 
 사용 흐름:
 

@@ -1,0 +1,2 @@
+description = "Connect the current project to the Obsidian AI OS Wiki"
+prompt = "Connect this project to AI OS Wiki. First ensure the working directory is the actual project folder, never the home directory. Prefer `ai-os setup`; if unavailable use `npx github:littleduck1219/ai-os-wiki-cli setup`. Do not overwrite team-owned AGENTS.md, CLAUDE.md, or CODEX.md; use `.ai-os/CODEX.md` when team files already exist. After connection, verify Project Root, Active Context, Runbook, Session Brief, Decision Log, Work Records, Follow-ups, and Issue Map exist."
