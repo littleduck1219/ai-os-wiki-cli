@@ -26,6 +26,8 @@ npx github:littleduck1219/ai-os-wiki-cli setup --dry-run
 npx github:littleduck1219/ai-os-wiki-cli setup
 ```
 
+`npx ... setup`은 CLI 실행이지 Codex 플러그인 설치가 아니다. 반드시 연결할 프로젝트 폴더 안에서 실행한다. 홈 디렉터리(`~`)에서는 `setup`이 거부된다.
+
 현재 폴더를 AI OS 위키에 연결하려면 `setup`을 사용한다.
 
 ```bash
@@ -115,7 +117,7 @@ If `CODEX.md`, `CLAUDE.md`, or `GEMINI.md` already exists, the CLI preserves the
 
 ## Codex Plugin
 
-이 repo에는 Codex에서 `/ai-os-wiki`처럼 호출하기 위한 얇은 플러그인이 포함되어 있다.
+이 repo에는 Codex에서 `/ai-os-wiki`처럼 호출하기 위한 얇은 플러그인 정의가 포함되어 있다. Codex 앱에서 사용하려면 이 repo가 Codex 플러그인 마켓플레이스 또는 지원되는 플러그인 소스에 등록되어야 한다.
 
 ```text
 .codex-plugin/plugin.json
@@ -127,7 +129,7 @@ skills/ai-os-wiki/SKILL.md
 사용 흐름:
 
 1. 이 repo를 GitHub에 push한다.
-2. Codex에서 이 repo를 플러그인으로 설치한다.
+2. Codex에서 이 repo를 플러그인 마켓플레이스 또는 지원되는 플러그인 소스로 설치한다.
 3. 연결할 프로젝트 세션에서 아래처럼 요청한다.
 
 ```text

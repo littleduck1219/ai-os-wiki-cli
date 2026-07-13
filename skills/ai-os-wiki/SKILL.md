@@ -10,26 +10,27 @@ Connect the current project to the user's Obsidian AI OS Wiki with the existing 
 ## Default Workflow
 
 1. Inspect the current project root and existing `AGENTS.md`, `CLAUDE.md`, `CODEX.md`, `.ai-os/CODEX.md`, and `.gitignore` files.
-2. Prefer the local CLI when available:
+2. Do not run setup from the user's home directory. Ask the user to open the actual project folder or pass `--project-path`.
+3. Prefer the local CLI when available:
 
    ```bash
    ai-os setup
    ```
 
-3. If `ai-os` is not installed, use the GitHub package:
+4. If `ai-os` is not installed, use the GitHub package:
 
    ```bash
    npx github:littleduck1219/ai-os-wiki-cli setup
    ```
 
-4. If the vault path is missing, ask the user for the Obsidian vault path or tell them to run:
+5. If the vault path is missing, ask the user for the Obsidian vault path or tell them to run:
 
    ```bash
    npx github:littleduck1219/ai-os-wiki-cli config set-vault --vault "/path/to/vault"
    ```
 
-5. Do not overwrite team-owned `AGENTS.md`, `CLAUDE.md`, or `CODEX.md`. If those files already contain unrelated project rules, keep the AI OS pointer in `.ai-os/CODEX.md` and make sure `.ai-os/` is ignored.
-6. After connecting, read the generated pointer and verify these docs exist:
+6. Do not overwrite team-owned `AGENTS.md`, `CLAUDE.md`, or `CODEX.md`. If those files already contain unrelated project rules, keep the AI OS pointer in `.ai-os/CODEX.md` and make sure `.ai-os/` is ignored.
+7. After connecting, read the generated pointer and verify these docs exist:
    - project root
    - Active Context
    - Runbook

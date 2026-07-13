@@ -185,6 +185,10 @@ function setupProject(args) {
   }
 
   const projectPath = path.resolve(args.projectPath || process.cwd());
+  if (!args.projectPath && isHomeDirectory(projectPath)) {
+    fail("Refusing to run setup from the home directory. Run this inside a project folder or pass --project-path /path/to/project.");
+  }
+
   const projectName = args.projectName || inferProjectName(projectPath);
   const projectSlug = args.projectSlug || slugify(projectName);
   const vault = resolveVault(args);
@@ -923,6 +927,10 @@ function escapeRegExp(value) {
 
 function inferProjectName(projectPath) {
   return path.basename(projectPath);
+}
+
+function isHomeDirectory(projectPath) {
+  return path.resolve(projectPath) === path.resolve(os.homedir());
 }
 
 function readConfig() {
