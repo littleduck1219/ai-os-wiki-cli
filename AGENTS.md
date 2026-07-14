@@ -24,9 +24,16 @@ When the user asks to connect the current project to AI OS Wiki:
    npx github:littleduck1219/ai-os-wiki-cli setup
    ```
 
-4. Run it from the actual project folder, or pass `--project-path /path/to/project`.
-5. Do not overwrite team-owned `AGENTS.md`, `CLAUDE.md`, or `CODEX.md`; use `.ai-os/CODEX.md` for personal AI OS pointers when team files already exist.
-6. After connection, verify the wiki has Project Root, Active Context, Runbook, Session Brief, Decision Log, Work Records, Follow-ups, and Issue Map.
+4. If the vault path is missing or invalid, ask the user for the Obsidian vault path. After they provide it, save it with:
+
+   ```bash
+   npx github:littleduck1219/ai-os-wiki-cli config set-vault --vault "/path/to/vault"
+   ```
+
+   Then rerun setup from the actual project folder.
+5. Run setup from the actual project folder, or pass `--project-path /path/to/project`.
+6. Do not overwrite team-owned `AGENTS.md`, `CLAUDE.md`, or `CODEX.md`; use `.ai-os/CODEX.md` for personal AI OS pointers when team files already exist.
+7. After connection, verify the wiki has Project Root, Active Context, Runbook, Session Brief, Decision Log, Work Records, Follow-ups, and Issue Map.
 
 If the user reports an issue, field error, deployment failure, screenshot, or log for a connected project, do not stop at chat analysis. Record or update an Issue Record in the project wiki unless the user explicitly asks not to write.
 
