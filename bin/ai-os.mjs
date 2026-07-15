@@ -644,7 +644,7 @@ function followUps(name, slug) {
 
 ## Rule
 
-- 새 수정거리는 \`90 Operations/92 Follow-ups/📗 {Follow-up Title}.md\`로 별도 노트를 만든다.
+- 새 수정거리는 \`90 Operations/92 Follow-ups/📘 {Follow-up Title}.md\`로 별도 노트를 만든다.
 - 발견한 작업 기록이나 배포 기록에는 이 Follow-up 노트 링크만 남긴다.
 - 바로 고쳐야 하는 장애나 재사용 가능한 버그는 \`90 Operations/Issues/10 Issue Records/\`에도 이슈로 승격한다.
 - 설계나 운영 기준이 바뀌면 \`📗 ${slug} Decision Log\`에도 남긴다.

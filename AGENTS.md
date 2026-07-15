@@ -42,7 +42,7 @@ If deployment or operations reveal future code changes, record them under `90 Op
 Filename icon hierarchy is structural, not decorative:
 
 - `📒` project root only.
-- `📕` major hubs and top-level indexes.
-- `📗` operational, rule, protocol, template, and mid-level documents.
-- `📘` leaf/detail documents, issue records, follow-up records, and work records.
+- `📕` major hubs and top-level indexes: Features, Assets, Operations, Work Records, Follow-ups, Issue Map, Issue Records.
+- `📗` operational, rule, protocol, template, and mid-level documents: Active Context, Runbook, Decision Log, Session Brief, feature/domain summaries, asset summaries, issue rules.
+- `📘` actual leaf/detail records: work record entries, issue record entries, follow-up entries, deep implementation/detail notes.
 - Do not create AI OS Wiki notes with `📄`; it sorts above the intended hierarchy and breaks the graph/folder reading order.
