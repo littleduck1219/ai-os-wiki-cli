@@ -1,6 +1,6 @@
 {
   "name": "ai-os-wiki-cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Local CLI for connecting projects to an Obsidian-based AI OS / LLM Wiki.",
   "license": "UNLICENSED",
   "type": "module",

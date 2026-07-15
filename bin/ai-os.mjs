@@ -607,7 +607,7 @@ function sessionBrief(name, slug, repo) {
 
 ## Work Record Behavior
 
-작업 이력, 변경 내역, 분석 로그처럼 기능 문서·공유 자산·운영 기준 문서로 분리하기 애매한 기록은 \`90 Operations/91 Work Records/{Work Unit}/\` 아래에 만들고 \`📕 ${slug} Work Records\`에 인덱싱한다. \`90 Operations\` 루트에는 기준 문서와 허브 문서만 둔다.
+작업 이력, 변경 내역, 분석 로그처럼 기능 문서·공유 자산·운영 기준 문서로 분리하기 애매한 기록은 \`90 Operations/91 Work Records/{Work Unit}/📘 {Record Title}.md\`로 만들고 \`📕 ${slug} Work Records\`에 인덱싱한다. \`90 Operations\` 루트에는 기준 문서와 허브 문서만 둔다. \`📄\` 아이콘은 사용하지 않는다.
 
 ## Follow-up Behavior
 
@@ -625,9 +625,11 @@ function workRecords(name, slug) {
 ## Folder Rule
 
 - 실제 작업 기록은 \`90 Operations/91 Work Records/{Work Unit}/\` 아래에 둔다.
+- 실제 작업 기록 파일명은 \`📘 {Record Title}.md\`를 사용한다.
 - \`91 Work Records/\` 루트에는 이 Work Records 허브만 둔다.
 - \`90 Operations/\` 루트에는 Operations, Active Context, Runbook, Decision Log, Session Brief 같은 기준 문서만 둔다.
 - 새 작업 단위 폴더나 기록 문서를 만들면 반드시 이 문서의 \`Records\` 섹션에 연결한다.
+- \`📄\` 아이콘은 AI OS Wiki 파일명에 사용하지 않는다.
 
 ## Records
 

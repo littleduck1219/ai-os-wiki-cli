@@ -38,3 +38,11 @@ When the user asks to connect the current project to AI OS Wiki:
 If the user reports an issue, field error, deployment failure, screenshot, or log for a connected project, do not stop at chat analysis. Record or update an Issue Record in the project wiki unless the user explicitly asks not to write.
 
 If deployment or operations reveal future code changes, record them under `90 Operations/92 Follow-ups/` and link them from the project Follow-ups hub.
+
+Filename icon hierarchy is structural, not decorative:
+
+- `📒` project root only.
+- `📕` major hubs and top-level indexes.
+- `📗` operational, rule, protocol, template, and mid-level documents.
+- `📘` leaf/detail documents, issue records, follow-up records, and work records.
+- Do not create AI OS Wiki notes with `📄`; it sorts above the intended hierarchy and breaks the graph/folder reading order.

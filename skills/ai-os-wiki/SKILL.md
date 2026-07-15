@@ -45,6 +45,16 @@ Connect the current project to the user's Obsidian AI OS Wiki with the existing 
 
 If the generated Runbook still contains blanks or placeholders, inspect the real project files and update only the Obsidian wiki documents unless the user asked for code changes.
 
+## Filename Icon Hierarchy
+
+AI OS Wiki filename icons are structural sort keys:
+
+- `📒` project root only.
+- `📕` major hubs and top-level indexes.
+- `📗` operational, rule, protocol, template, and mid-level documents.
+- `📘` leaf/detail documents, issue records, follow-up records, and work records.
+- Never create AI OS Wiki notes with `📄`.
+
 ## Output
 
 Keep the final response short:

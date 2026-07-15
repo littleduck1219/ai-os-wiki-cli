@@ -103,6 +103,15 @@ The Runbook is mandatory for every connected project. After connection, the AI m
 
 `📕 {project-slug} Operations` is the top-level operations index. Keep reusable state, run, decision, session, issue, work-record, and follow-up sections linked from it. Do not place ad hoc work logs directly in `90 Operations/`; put them under `90 Operations/91 Work Records/{Work Unit}/` and index the work unit or record in `📕 {project-slug} Work Records`. Put newly discovered future fixes under `90 Operations/92 Follow-ups/` and index them in `📕 {project-slug} Follow-ups`.
 
+Filename icons are structural sort keys:
+
+- `📒` project root only
+- `📕` major hubs and top-level indexes
+- `📗` operational, rule, protocol, template, and mid-level documents
+- `📘` leaf/detail documents, issue records, follow-up records, and work records
+
+Do not create AI OS Wiki notes with `📄`; it sorts outside the intended hierarchy.
+
 - Issue structure:
   - `Issues/📕 {project-slug} Issue Map`
   - `Issues/00 Issue Rules/`
