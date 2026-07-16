@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "ai-os-wiki",
+  "description": "Obsidian AI OS Wiki project memory for Claude Code and Codex.",
+  "owner": {
+    "name": "littleduck",
+    "url": "https://github.com/littleduck1219"
+  },
+  "plugins": [
+    {
+      "name": "ai-os-wiki",
+      "description": "Loads AI OS Wiki rules at session start and points projects to Obsidian long-term memory.",
+      "source": "./",
+      "category": "productivity"
+    }
+  ]
+}

@@ -174,6 +174,23 @@ ai-os setup
 npx github:littleduck1219/ai-os-wiki-cli setup
 ```
 
+## Claude Code Plugin
+
+Claude Code에서도 같은 hook을 사용한다.
+
+```bash
+claude plugin marketplace add littleduck1219/ai-os-wiki-cli
+claude plugin install ai-os-wiki@ai-os-wiki
+```
+
+설치 후 새 Claude Code 세션을 열면 `.claude-plugin/plugin.json`이 `hooks/claude-codex-hooks.json`을 통해 `AGENTS.md`의 AI OS Wiki 규칙을 주입한다.
+
+한 세션에서만 직접 테스트하려면:
+
+```bash
+claude --plugin-dir /Users/littleduck/Documents/LLM\ Systrem
+```
+
 ## Record An Issue
 
 Use `record-issue` when an AI session receives an error, screenshot, install failure, field issue, or log.
