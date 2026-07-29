@@ -6,8 +6,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/ai-os-wiki-activate.js\"",
-            "commandWindows": "if (Get-Command node -ErrorAction SilentlyContinue) { node \"$env:CLAUDE_PLUGIN_ROOT\\hooks\\ai-os-wiki-activate.js\" }",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/ai-os-wiki-session-start.js\"",
+            "commandWindows": "if (Get-Command node -ErrorAction SilentlyContinue) { node \"$env:CLAUDE_PLUGIN_ROOT\\hooks\\ai-os-wiki-session-start.js\" }",
             "timeout": 5,
             "statusMessage": "Loading AI OS Wiki..."
           }
@@ -19,8 +19,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/ai-os-wiki-activate.js\" UserPromptSubmit",
-            "commandWindows": "if (Get-Command node -ErrorAction SilentlyContinue) { node \"$env:CLAUDE_PLUGIN_ROOT\\hooks\\ai-os-wiki-activate.js\" UserPromptSubmit }",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/ai-os-wiki-prompt-submit.js\"",
+            "commandWindows": "if (Get-Command node -ErrorAction SilentlyContinue) { node \"$env:CLAUDE_PLUGIN_ROOT\\hooks\\ai-os-wiki-prompt-submit.js\" }",
             "timeout": 5,
             "statusMessage": "Loading AI OS Wiki..."
           }

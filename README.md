@@ -128,7 +128,10 @@ If `CODEX.md`, `CLAUDE.md`, or `GEMINI.md` already exists, the CLI preserves the
 
 이 repo에는 Codex 세션마다 자동 적용되는 AI OS Wiki 플러그인 정의가 포함되어 있다. Codex 앱에서 사용하려면 이 repo가 Codex 플러그인 마켓플레이스 또는 지원되는 플러그인 소스에 등록되어야 한다.
 
-The plugin injects AI OS Wiki instructions on session start and on each user prompt submission, mirroring the always-on behavior used by ponytail-style plugins.
+The plugin injects AI OS Wiki instructions on session start and on each user prompt submission, mirroring the always-on behavior used by ponytail-style plugins. The two lifecycle events use separate hook entry scripts so plugin UIs can present them separately:
+
+- `hooks/ai-os-wiki-session-start.js`
+- `hooks/ai-os-wiki-prompt-submit.js`
 
 ```text
 .codex-plugin/plugin.json
