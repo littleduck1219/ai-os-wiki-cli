@@ -460,18 +460,19 @@ function activeContext(name, slug, repo) {
 function runbook(name, slug, repo) {
   return note(`📗 ${slug} Runbook`, `[[📕 ${slug} Operations]]`, ["ai-os", "llm-wiki", "project", slug, "runbook", "operation"], `# ${slug} Runbook
 
-${name} 프로젝트를 설치, 실행, 검증하기 위한 운영 런북이다.
+${name} 프로젝트를 운영, 실행, 작성, 배포, 검증하기 위한 런북이다.
 
 > [!IMPORTANT]
-> 프로젝트 연결은 이 파일을 생성하는 것으로 끝나지 않는다. 연결을 수행한 AI는 실제 repo를 분석해 아래 항목을 채워야 하며, 확인하지 못한 값은 추측하지 않고 \`미확인\`으로 표시한다.
+> 프로젝트 연결은 이 파일을 생성하는 것으로 끝나지 않는다. 연결을 수행한 AI는 실제 repo를 분석해 아래 항목을 채워야 하며, 확인하지 못한 값은 추측하지 않고 \`미확인\`으로 표시한다. 문서, 포트폴리오, 서버 구축 기록, 지식 프로젝트처럼 실행 대상이 명확하지 않은 경우에는 \`실행 방법 없음\`으로 단정하지 말고 작성, 발행, 배포, 운영 흐름을 기록한다.
 
 ## Initialization Requirement
 
 - package manager와 lockfile을 확인한다.
-- 설치, 로컬 실행, 빌드, 테스트 명령을 실제 설정 파일에서 확인한다.
+- 소프트웨어 repo라면 설치, 로컬 실행, 빌드, 테스트 명령을 실제 설정 파일에서 확인한다.
+- 문서, 포트폴리오, 서버 구축 기록, 지식 프로젝트라면 작성, 발행, 배포, 운영 흐름을 확인한다.
 - DB, cache, queue, Docker 사용 여부와 기동 순서를 확인한다.
 - 사용 포트와 필수 환경 파일을 확인한다.
-- Runbook의 필수 항목이 비어 있으면 프로젝트 연결이 완료된 것으로 간주하지 않는다.
+- 기존 사람이 작성한 Runbook 내용은 사용자가 갱신을 요청하지 않는 한 덮어쓰지 않는다.
 
 ## Environment
 
@@ -494,6 +495,12 @@ ${name} 프로젝트를 설치, 실행, 검증하기 위한 운영 런북이다.
 \`\`\`bash
 # local dev server command
 \`\`\`
+
+## Documentation Or Operating Workflow
+
+- Writing entry point:
+- Publishing/deployment flow:
+- Server or environment operation:
 
 ## Build
 
@@ -603,7 +610,7 @@ function sessionBrief(name, slug, repo) {
 
 ## Project Connection Behavior
 
-이 프로젝트가 AI OS Wiki에 새로 연결되었고 Runbook에 빈 항목이 있으면, 코드 수정 전에 repo 구조와 설정 파일을 분석해 설치, 실행, 빌드, 테스트, DB, Docker, 포트 정보를 Runbook에 작성한다. Runbook 작성이 끝나기 전에는 위키 초기화가 완료된 것으로 간주하지 않는다.
+이 프로젝트가 AI OS Wiki에 새로 연결되었고 Runbook에 빈 항목이 있으면, 코드 수정 전에 repo 구조와 설정 파일을 분석한다. 실행 가능한 소프트웨어 repo라면 설치, 실행, 빌드, 테스트, DB, Docker, 포트 정보를 Runbook에 작성한다. 문서, 포트폴리오, 서버 구축 기록, 지식 프로젝트라면 \`실행 방법 없음\`으로 단정하지 말고 작성, 발행, 배포, 운영 흐름을 Runbook에 작성한다. 기존 사람이 작성한 Runbook은 사용자가 갱신을 요청하지 않는 한 덮어쓰지 않는다.
 
 ## Work Record Behavior
 
@@ -745,10 +752,11 @@ Do not treat this file as the long-term memory store. It is only a pointer into 
 
 Project connection requirement:
 
-- When this repository is newly connected to AI OS Wiki, inspect the repository and populate the Runbook automatically.
-- The Runbook must cover installation, local execution, build, test, database, Docker or required services, ports, and required environment files.
-- Do not leave generated placeholders blank. Mark unverified values as \`Unverified\` instead of guessing.
-- Wiki initialization is incomplete until the Runbook is populated.
+- When this repository is newly connected to AI OS Wiki, inspect the repository and populate the Runbook only with information supported by real files or user-provided context.
+- For executable software, cover installation, local execution, build, test, database, Docker or required services, ports, and required environment files.
+- For documentation, portfolio, server-build, or knowledge projects, record the writing, publishing, deployment, or operating workflow instead of saying there is no run method.
+- Do not overwrite existing human-written Runbook content unless the user asks for a refresh.
+- Mark unverified values as \`Unverified\` instead of guessing.
 <!-- AI_OS_WIKI_POINTER:${markerName}:END -->
 `;
 }

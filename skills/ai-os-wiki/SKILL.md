@@ -43,7 +43,7 @@ Connect the current project to the user's Obsidian AI OS Wiki with the existing 
 
 ## Follow-up Initialization
 
-If the generated Runbook still contains blanks or placeholders, inspect the real project files and update only the Obsidian wiki documents unless the user asked for code changes.
+Treat the Runbook as the project's operation guide, not always as an application execution guide. For executable software repositories, inspect real project files and populate install, run, build, test, database, Docker/services, ports, and environment details. For documentation, portfolio, server-build, or knowledge projects, do not write "no run method" just because no package scripts exist; record the actual writing, publishing, deployment, or operating workflow instead, and leave unverified values as `Unverified`. Do not overwrite existing human-written Runbook content unless the user explicitly asks for a refresh.
 
 ## Filename Icon Hierarchy
 

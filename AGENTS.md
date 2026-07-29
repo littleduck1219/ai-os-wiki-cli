@@ -35,6 +35,8 @@ When the user asks to connect the current project to AI OS Wiki:
 6. Do not overwrite team-owned `AGENTS.md`, `CLAUDE.md`, or `CODEX.md`; use `.ai-os/CODEX.md` for personal AI OS pointers when team files already exist.
 7. After connection, verify the wiki has Project Root, Active Context, Runbook, Session Brief, Decision Log, Work Records, Follow-ups, and Issue Map.
 
+Runbook is the project's operation guide. For executable software, fill install/run/build/test/service details from real files. For documentation, portfolio, server-build, or knowledge projects, record the writing, publishing, deployment, or operating workflow instead of saying there is no run method. Do not overwrite existing human-written Runbook content unless the user explicitly asks for a refresh.
+
 If the user reports an issue, field error, deployment failure, screenshot, or log for a connected project, do not stop at chat analysis. Record or update an Issue Record in the project wiki unless the user explicitly asks not to write.
 
 If deployment or operations reveal future code changes, record them under `90 Operations/92 Follow-ups/` and link them from the project Follow-ups hub.

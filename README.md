@@ -99,7 +99,7 @@ node bin/ai-os.mjs connect-project \
   - `91 Work Records/📕 {project-slug} Work Records`
   - `92 Follow-ups/📕 {project-slug} Follow-ups`
 
-The Runbook is mandatory for every connected project. After connection, the AI must inspect the repository and populate installation, execution, build, test, database, Docker/services, ports, and environment-file information. A generated Runbook containing blank placeholders does not count as completed wiki initialization.
+The Runbook is mandatory for every connected project, but it is an operation guide, not always an app execution guide. For executable software repositories, the AI should populate installation, execution, build, test, database, Docker/services, ports, and environment-file information from real files. For documentation, portfolio, server-build, or knowledge projects, it should record the actual writing, publishing, deployment, or operating workflow instead of writing that no run method exists. Existing human-written Runbook content must not be overwritten unless the user asks for a refresh.
 
 `📕 {project-slug} Operations` is the top-level operations index. Keep reusable state, run, decision, session, issue, work-record, and follow-up sections linked from it. Do not place ad hoc work logs directly in `90 Operations/`; put them under `90 Operations/91 Work Records/{Work Unit}/` and index the work unit or record in `📕 {project-slug} Work Records`. Put newly discovered future fixes under `90 Operations/92 Follow-ups/` and index them in `📕 {project-slug} Follow-ups`.
 
@@ -127,6 +127,8 @@ If `CODEX.md`, `CLAUDE.md`, or `GEMINI.md` already exists, the CLI preserves the
 ## Codex Plugin
 
 이 repo에는 Codex 세션마다 자동 적용되는 AI OS Wiki 플러그인 정의가 포함되어 있다. Codex 앱에서 사용하려면 이 repo가 Codex 플러그인 마켓플레이스 또는 지원되는 플러그인 소스에 등록되어야 한다.
+
+The plugin injects AI OS Wiki instructions on session start and on each user prompt submission, mirroring the always-on behavior used by ponytail-style plugins.
 
 ```text
 .codex-plugin/plugin.json
