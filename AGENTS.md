@@ -24,16 +24,17 @@ When the user asks to connect the current project to AI OS Wiki:
    npx github:littleduck1219/ai-os-wiki-cli setup
    ```
 
-4. If the vault path is missing or invalid, ask the user for the Obsidian vault path. After they provide it, save it with:
+4. If setup reports a missing vault or missing `ai-os.json`, ask the user for the Obsidian vault path, then initialize it:
 
    ```bash
-   npx github:littleduck1219/ai-os-wiki-cli config set-vault --vault "/path/to/vault"
+   npx github:littleduck1219/ai-os-wiki-cli init --vault "/path/to/vault"
    ```
 
-   Then rerun setup from the actual project folder.
+   If the vault already has an AI OS layout, match it instead of creating new folders, e.g. `--settings-folder "60.AI OS" --projects-root "60.AI OS/Projects"`. Then rerun setup from the actual project folder.
 5. Run setup from the actual project folder, or pass `--project-path /path/to/project`.
-6. Do not overwrite team-owned `AGENTS.md`, `CLAUDE.md`, or `CODEX.md`; use `.ai-os/CODEX.md` for personal AI OS pointers when team files already exist.
-7. After connection, verify the wiki has Project Root, Active Context, Runbook, Session Brief, Decision Log, Work Records, Follow-ups, and Issue Map.
+6. Wiki placement and the Atlas numbering integration come from `<vault>/<settings-folder>/ai-os.json` (`projectsRoot`, `atlas.*`). Do not hardcode vault folder names; read them from that file when unsure where project wikis live.
+7. Do not overwrite team-owned `AGENTS.md`, `CLAUDE.md`, or `CODEX.md`; use `.ai-os/CODEX.md` for personal AI OS pointers when team files already exist.
+8. After connection, verify the wiki has Project Root, Active Context, Runbook, Session Brief, Decision Log, Work Records, Follow-ups, and Issue Map.
 
 Runbook is the project's operation guide. For executable software, fill install/run/build/test/service details from real files. For documentation, portfolio, server-build, or knowledge projects, record the writing, publishing, deployment, or operating workflow instead of saying there is no run method. Do not overwrite existing human-written Runbook content unless the user explicitly asks for a refresh.
 

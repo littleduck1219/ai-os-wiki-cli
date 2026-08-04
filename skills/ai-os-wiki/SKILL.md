@@ -23,13 +23,13 @@ Connect the current project to the user's Obsidian AI OS Wiki with the existing 
    npx github:littleduck1219/ai-os-wiki-cli setup
    ```
 
-5. If the vault path is missing or invalid, ask the user for the Obsidian vault path. After they provide it, save it with:
+5. If setup reports a missing vault or missing `ai-os.json`, ask the user for the Obsidian vault path, then initialize it:
 
    ```bash
-   npx github:littleduck1219/ai-os-wiki-cli config set-vault --vault "/path/to/vault"
+   npx github:littleduck1219/ai-os-wiki-cli init --vault "/path/to/vault"
    ```
 
-   Then rerun setup from the actual project folder.
+   If the vault already has an AI OS layout, match it instead of creating new folders (e.g. `--settings-folder "60.AI OS" --projects-root "60.AI OS/Projects"`). Then rerun setup from the actual project folder. Wiki placement and the Atlas numbering integration are configured in `<vault>/<settings-folder>/ai-os.json`.
 6. Do not overwrite team-owned `AGENTS.md`, `CLAUDE.md`, or `CODEX.md`. If those files already contain unrelated project rules, keep the AI OS pointer in `.ai-os/CODEX.md` and make sure `.ai-os/` is ignored.
 7. After connecting, read the generated pointer and verify these docs exist:
    - project root

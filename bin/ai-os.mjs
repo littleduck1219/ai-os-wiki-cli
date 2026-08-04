@@ -3,12 +3,22 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
-const AI_OS_DIR = "60.AI OS";
-const PROJECT_WIKI_CONNECTOR = "📚 515 Project Wiki";
-const PROJECT_WIKI_CONNECTOR_FILE = `${PROJECT_WIKI_CONNECTOR}.md`;
-const DEFAULT_VAULT = "/Users/littleduck/littleduck";
 const CONFIG_DIR = path.join(os.homedir(), ".ai-os-wiki-cli");
 const CONFIG_FILE = path.join(CONFIG_DIR, "config.json");
+const DEFAULT_SETTINGS_FOLDER = "AI OS Settings";
+const VAULT_CONFIG_FILE = "ai-os.json";
+
+function defaultVaultConfig(settingsFolder) {
+  return {
+    projectsRoot: `${settingsFolder}/Projects`,
+    atlas: {
+      enabled: true,
+      projectConnector: "📚 515 Project Wiki",
+      settingsConnector: "📚 516 AI OS Settings",
+      connectorFolder: `${settingsFolder}/Connectors`,
+    },
+  };
+}
 const IGNORE_BLOCK = `# AI Wiki / LLM session pointers
 /CODEX.md
 /CLAUDE.md
@@ -24,6 +34,11 @@ function main() {
 
   if (!command || command === "--help" || command === "-h") {
     printMainHelp();
+    return;
+  }
+
+  if (command === "init") {
+    initVault(parseArgs(argv));
     return;
   }
 
@@ -54,15 +69,32 @@ function printMainHelp() {
   console.log(`AI OS Wiki CLI
 
 Usage:
+  ai-os init --vault <path>
   ai-os setup [--project-name <name>]
   ai-os config set-vault --vault <path>
   ai-os connect-project --vault <path> --project-name <name> --project-slug <slug> --project-path <repo>
 
 Commands:
+  init              Initialize a vault: settings folder, ai-os.json, Atlas connectors
   setup             Infer defaults from the current repo and connect it to AI OS
   config            Save or show AI OS Wiki CLI settings
   connect-project   Create or update an Obsidian project wiki and repo pointer files
   record-issue      Create an issue record note and index it under Issue Records
+`);
+}
+
+function printInitHelp() {
+  console.log(`Usage:
+  ai-os init --vault <path> [--settings-folder <name>] [--projects-root <vault-relative-path>] [--connector-folder <vault-relative-path>] [--no-atlas]
+
+Options:
+  --vault             Obsidian vault path (saved to machine config)
+  --settings-folder   Vault folder holding ai-os.json and generated settings notes (default "${DEFAULT_SETTINGS_FOLDER}")
+  --projects-root     Vault-relative folder where project wikis are created (default "<settings-folder>/Projects")
+  --connector-folder  Vault-relative folder for Atlas connector notes (default "<settings-folder>/Connectors")
+  --no-atlas          Disable the Atlas numbering integration (frontmatter + connector notes)
+
+Idempotent: re-running keeps existing ai-os.json values unless overridden by flags.
 `);
 }
 
@@ -168,6 +200,10 @@ function parseArgs(argv) {
       args.force = true;
       continue;
     }
+    if (arg === "--no-atlas") {
+      args.noAtlas = true;
+      continue;
+    }
     if (!arg.startsWith("--")) fail(`Unexpected argument: ${arg}`);
     const key = toCamel(arg.slice(2));
     const value = argv[index + 1];
@@ -176,6 +212,80 @@ function parseArgs(argv) {
     index += 1;
   }
   return args;
+}
+
+function initVault(args) {
+  if (args.help) {
+    printInitHelp();
+    return;
+  }
+
+  const machine = readConfig();
+  const vaultInput = args.vault || machine.vault;
+  if (!vaultInput) fail("Missing required option: --vault");
+  const vault = path.resolve(vaultInput);
+  if (!fs.existsSync(vault)) fail(`Vault path does not exist: ${vault}`);
+
+  const settingsFolder = args.settingsFolder || machine.settingsFolder || DEFAULT_SETTINGS_FOLDER;
+
+  fs.mkdirSync(CONFIG_DIR, { recursive: true });
+  fs.writeFileSync(CONFIG_FILE, `${JSON.stringify({ ...machine, vault, settingsFolder }, null, 2)}\n`, "utf8");
+
+  const configFile = path.join(vault, settingsFolder, VAULT_CONFIG_FILE);
+  const existing = fs.existsSync(configFile) ? JSON.parse(fs.readFileSync(configFile, "utf8")) : {};
+  const defaults = defaultVaultConfig(settingsFolder);
+  const config = {
+    projectsRoot: args.projectsRoot || existing.projectsRoot || defaults.projectsRoot,
+    atlas: args.noAtlas
+      ? { enabled: false }
+      : {
+          ...defaults.atlas,
+          ...existing.atlas,
+          enabled: true,
+          ...(args.connectorFolder ? { connectorFolder: args.connectorFolder } : {}),
+        },
+  };
+
+  fs.mkdirSync(path.join(vault, settingsFolder), { recursive: true });
+  fs.mkdirSync(path.join(vault, config.projectsRoot), { recursive: true });
+  fs.writeFileSync(configFile, `${JSON.stringify(config, null, 2)}\n`, "utf8");
+  console.log(`[write] ${configFile}`);
+
+  if (config.atlas.enabled) {
+    const connectorDir = path.join(vault, config.atlas.connectorFolder);
+    const projectConnectorFile = path.join(connectorDir, `${config.atlas.projectConnector}.md`);
+    const settingsConnectorFile = path.join(connectorDir, `${config.atlas.settingsConnector}.md`);
+    const ctx = { dryRun: false, force: false };
+    writeFile(projectConnectorFile, connectorNote(config.atlas.projectConnector, "Projects", [
+      "프로젝트 루트 문서의 Atlas는 이 커넥터로 둔다.",
+      "프로젝트 루트 문서명은 `📒 {project-slug}` 형식으로 둔다.",
+      "프로젝트 하위 문서는 각 프로젝트 루트 또는 프로젝트 내부 허브에 연결한다.",
+    ]), ctx);
+    writeFile(settingsConnectorFile, connectorNote(config.atlas.settingsConnector, "Settings", [
+      "이 커넥터에는 AI OS 설정 허브만 직접 연결한다.",
+      "세부 규칙과 템플릿 문서는 각 설정 허브 아래에 둔다.",
+    ]), ctx);
+  }
+
+  console.log(`done: vault initialized at ${vault} (settings: ${settingsFolder}, projects: ${config.projectsRoot}, atlas: ${config.atlas.enabled ? "on" : "off"})`);
+}
+
+function connectorNote(title, sectionTitle, rules) {
+  return `---
+modified: ${today()} 00:00
+tags:
+  - connector
+---
+# ${title}
+
+Atlas 메인에서 들어가기 위한 커넥터다.
+
+## ${sectionTitle}
+
+## Link Rule
+
+${rules.map((rule) => `- ${rule}`).join("\n")}
+`;
 }
 
 function setupProject(args) {
@@ -265,19 +375,47 @@ function recordIssue(args) {
   log(context, `done: issue recorded as ${noteTitle}`);
 }
 
+function readVaultConfig(vault) {
+  const machine = readConfig();
+  const candidates = [machine.settingsFolder, DEFAULT_SETTINGS_FOLDER].filter(Boolean);
+  for (const folder of candidates) {
+    const file = path.join(vault, folder, VAULT_CONFIG_FILE);
+    if (!fs.existsSync(file)) continue;
+    try {
+      return JSON.parse(fs.readFileSync(file, "utf8"));
+    } catch {
+      fail(`Invalid vault config: ${file}`);
+    }
+  }
+  fail([
+    `No ${VAULT_CONFIG_FILE} found in vault: ${vault}`,
+    "",
+    "Initialize the vault first:",
+    '  ai-os init --vault "/path/to/vault"',
+    "",
+    "For an existing layout, point at it explicitly, e.g.:",
+    '  ai-os init --vault "/path/to/vault" --settings-folder "60.AI OS" --projects-root "60.AI OS/Projects"',
+  ].join("\n"));
+}
+
 function buildContext(args) {
   const vault = path.resolve(args.vault);
   const projectPath = path.resolve(args.projectPath);
   const projectName = args.projectName;
   const projectSlug = args.projectSlug;
-  const projectRoot = path.join(vault, AI_OS_DIR, "Projects", projectSlug);
+  const vaultConfig = readVaultConfig(vault);
+  const projectsRoot = vaultConfig.projectsRoot;
+  const projectRoot = path.join(vault, projectsRoot, projectSlug);
+  const atlas = vaultConfig.atlas && vaultConfig.atlas.enabled ? vaultConfig.atlas : null;
 
   return {
     vault,
     projectPath,
     projectName,
     projectSlug,
+    projectsRoot,
     projectRoot,
+    atlas,
     dryRun: Boolean(args.dryRun),
     force: Boolean(args.force),
   };
@@ -290,14 +428,14 @@ function buildProjectWrites(context) {
   const repo = context.projectPath;
 
   return new Map([
-    [path.join(p, `📒 ${slug}.md`), projectIndex(n, slug, repo)],
+    [path.join(p, `📒 ${slug}.md`), projectIndex(n, slug, repo, context.atlas)],
     [path.join(p, "10 Features and Domains", `📕 ${slug} Features.md`), featureHub(n, slug)],
     [path.join(p, "20 Shared Assets", `📕 ${slug} Assets.md`), sharedHub(n, slug)],
     [path.join(p, "90 Operations", `📕 ${slug} Operations.md`), operationsHub(n, slug)],
     [path.join(p, "90 Operations", `📗 ${slug} Active Context.md`), activeContext(n, slug, repo)],
     [path.join(p, "90 Operations", `📗 ${slug} Runbook.md`), runbook(n, slug, repo)],
     [path.join(p, "90 Operations", `📗 ${slug} Decision Log.md`), decisionLog(n, slug)],
-    [path.join(p, "90 Operations", `📗 ${slug} Session Brief.md`), sessionBrief(n, slug, repo)],
+    [path.join(p, "90 Operations", `📗 ${slug} Session Brief.md`), sessionBrief(n, slug, repo, context.projectsRoot)],
     [path.join(p, "90 Operations", "91 Work Records", `📕 ${slug} Work Records.md`), workRecords(n, slug)],
     [path.join(p, "90 Operations", "92 Follow-ups", `📕 ${slug} Follow-ups.md`), followUps(n, slug)],
     [path.join(p, "90 Operations", "Issues", `📕 ${slug} Issue Map.md`), issueMap(n, slug)],
@@ -314,8 +452,8 @@ function buildProjectUpdates(context) {
   ];
 }
 
-function projectIndex(name, slug, repo) {
-  return note(`📒 ${slug}`, `[[${PROJECT_WIKI_CONNECTOR}]]`, ["ai-os", "llm-wiki", "project", slug, "project-root", "hub"], `# ${slug}
+function projectIndex(name, slug, repo, atlas) {
+  return note(`📒 ${slug}`, atlas ? `[[${atlas.projectConnector}]]` : "", ["ai-os", "llm-wiki", "project", slug, "project-root", "hub"], `# ${slug}
 
 ${name} 프로젝트의 LLM Wiki 루트 문서다.
 
@@ -590,7 +728,7 @@ function decisionLog(name, slug) {
 `);
 }
 
-function sessionBrief(name, slug, repo) {
+function sessionBrief(name, slug, repo, projectsRoot) {
   return note(`📗 ${slug} Session Brief`, `[[📕 ${slug} Operations]]`, ["ai-os", "llm-wiki", "project", slug, "session-brief", "operation"], `# ${slug} Session Brief
 
 이 세션은 Obsidian LLM Wiki를 기준으로 ${name} 프로젝트를 이어서 진행한다.
@@ -600,7 +738,7 @@ function sessionBrief(name, slug, repo) {
 1. \`${path.join(repo, "CODEX.md")}\`
 2. \`${path.join(repo, "CLAUDE.md")}\`
 3. \`${path.join(repo, "GEMINI.md")}\`
-4. \`${path.join("60.AI OS/Projects", slug, `📒 ${slug}.md`)}\`
+4. \`${path.join(projectsRoot, slug, `📒 ${slug}.md`)}\`
 5. \`📗 ${slug} Active Context\`
 6. \`📗 ${slug} Runbook\`
 
@@ -823,10 +961,9 @@ function issueRecordNote(issue) {
   ].join("\n"));
 }
 
-function note(title, cmds, tags, body) {
+function note(title, atlas, tags, body) {
   return `---
-title: ${title}
-CMDS: "${cmds}"
+title: ${title}${atlas ? `\nAtlas: "${atlas}"` : ""}
 type:
   - note
 tags:
@@ -880,9 +1017,18 @@ function upsertManagedBlock(file, block, marker, context) {
 }
 
 function appendProjectWikiConnector(context) {
-  const file = path.join(context.vault, "10.Guideline", "connector", PROJECT_WIKI_CONNECTOR_FILE);
-  if (!fs.existsSync(file)) return;
-  const link = `[[${AI_OS_DIR}/Projects/${context.projectSlug}/📒 ${context.projectSlug}|📒 ${context.projectSlug}]]`;
+  if (!context.atlas) return;
+  const file = path.join(context.vault, context.atlas.connectorFolder, `${context.atlas.projectConnector}.md`);
+  if (!fs.existsSync(file)) {
+    writeFile(file, connectorNote(context.atlas.projectConnector, "Projects", [
+      "프로젝트 루트 문서의 Atlas는 이 커넥터로 둔다.",
+      "프로젝트 루트 문서명은 `📒 {project-slug}` 형식으로 둔다.",
+      "프로젝트 하위 문서는 각 프로젝트 루트 또는 프로젝트 내부 허브에 연결한다.",
+    ]), context);
+    if (context.dryRun) return;
+  }
+  const wikiPath = [context.projectsRoot, context.projectSlug, `📒 ${context.projectSlug}`].join("/");
+  const link = `[[${wikiPath}|📒 ${context.projectSlug}]]`;
   const current = fs.readFileSync(file, "utf8");
   if (current.includes(link)) return;
   writeFile(file, `${current.trimEnd()}\n- ${link}\n`, { ...context, force: true });
@@ -954,12 +1100,7 @@ function readConfig() {
 
 function resolveVault(args) {
   const config = readConfig();
-  const candidates = [
-    args.vault,
-    process.env.AI_OS_VAULT,
-    config.vault,
-    fs.existsSync(DEFAULT_VAULT) ? DEFAULT_VAULT : "",
-  ].filter(Boolean);
+  const candidates = [args.vault, process.env.AI_OS_VAULT, config.vault].filter(Boolean);
 
   const vault = candidates[0] ? path.resolve(candidates[0]) : "";
 

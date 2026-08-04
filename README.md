@@ -78,10 +78,17 @@ Run `codex`, open `/hooks`, trust the two lifecycle hooks, and start a new threa
 
 ## Connect a project
 
-On a machine where you haven't used AI OS Wiki before, point it at your Obsidian vault once:
+On a machine where you haven't used AI OS Wiki before, initialize your vault once — new sessions will also detect the missing setup and ask you for the vault path themselves:
 
 ```bash
-npx github:littleduck1219/ai-os-wiki-cli config set-vault --vault "/path/to/obsidian-vault"
+npx github:littleduck1219/ai-os-wiki-cli init --vault "/path/to/obsidian-vault"
+```
+
+This creates a settings folder (default `AI OS Settings/`) holding `ai-os.json` — where project wikis go (`projectsRoot`) and how the Atlas numbering integration behaves. The file syncs with your vault, so other machines only need the vault path. If your vault already has a layout, match it instead of creating new folders:
+
+```bash
+npx github:littleduck1219/ai-os-wiki-cli init --vault "/path/to/vault" \
+  --settings-folder "60.AI OS" --projects-root "60.AI OS/Projects"
 ```
 
 Then, in a session inside the project you want to connect:
@@ -94,7 +101,7 @@ That's it. New sessions in that project now read the wiki before touching the co
 
 ## What it creates
 
-Under `60.AI OS/Projects/{project-slug}` in your vault:
+Under your vault's projects root (`projectsRoot` in `ai-os.json`, default `AI OS Settings/Projects/{project-slug}`):
 
 ```text
 📒 {project}                      project root
@@ -112,9 +119,12 @@ In the repo it writes only pointer files (`CLAUDE.md`, `CODEX.md`, `GEMINI.md`).
 
 The filename emoji are structural sort keys, not decoration: `📒` project root, `📕` hubs and indexes, `📗` operational documents, `📘` leaf records.
 
+With Atlas enabled (the default), each project root gets an `Atlas:` frontmatter link to your project connector note (default `📚 515 Project Wiki`) and is listed there automatically, so every project wiki stays reachable from your vault's index. Disable with `ai-os init --no-atlas` or `"atlas": {"enabled": false}` in `ai-os.json`.
+
 ## CLI reference
 
 ```bash
+ai-os init --vault "/path" # one-time vault setup: settings folder, ai-os.json, Atlas connectors
 ai-os setup                # connect the current folder (infers vault, name, slug)
 ai-os setup --dry-run      # preview without writing
 ai-os config set-vault --vault "/path"

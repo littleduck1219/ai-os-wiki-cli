@@ -78,10 +78,17 @@ codex plugin add ai-os-wiki@ai-os-wiki
 
 ## 프로젝트 연결
 
-처음 쓰는 컴퓨터에서는 Obsidian vault 위치를 한 번만 알려준다:
+처음 쓰는 컴퓨터에서는 vault를 한 번만 초기화한다 — 새 세션이 미설정을 감지하면 vault 경로를 먼저 물어보기도 한다:
 
 ```bash
-npx github:littleduck1219/ai-os-wiki-cli config set-vault --vault "/path/to/obsidian-vault"
+npx github:littleduck1219/ai-os-wiki-cli init --vault "/path/to/obsidian-vault"
+```
+
+이 명령은 설정 폴더(기본 `AI OS Settings/`)와 `ai-os.json`을 만든다 — 프로젝트 위키가 생성될 위치(`projectsRoot`)와 Atlas 넘버링 연동 설정이 여기 담긴다. 이 파일은 vault와 함께 동기화되므로 다른 머신에서는 vault 경로만 알려주면 된다. 이미 자기 구조가 있는 vault라면 새 폴더를 만들지 말고 기존 구조에 맞춘다:
+
+```bash
+npx github:littleduck1219/ai-os-wiki-cli init --vault "/path/to/vault" \
+  --settings-folder "60.AI OS" --projects-root "60.AI OS/Projects"
 ```
 
 그다음 연결할 프로젝트 안의 세션에서:
@@ -94,7 +101,7 @@ npx github:littleduck1219/ai-os-wiki-cli config set-vault --vault "/path/to/obsi
 
 ## 생성되는 것
 
-vault의 `60.AI OS/Projects/{project-slug}` 아래:
+vault 설정의 projects root(`ai-os.json`의 `projectsRoot`, 기본 `AI OS Settings/Projects/{project-slug}`) 아래:
 
 ```text
 📒 {project}                      프로젝트 루트
@@ -112,9 +119,12 @@ repo에는 포인터 파일(`CLAUDE.md`, `CODEX.md`, `GEMINI.md`)만 쓴다. 기
 
 파일명 이모지는 장식이 아니라 구조적 정렬 키다: `📒` 프로젝트 루트, `📕` 허브·인덱스, `📗` 운영 문서, `📘` 말단 기록.
 
+Atlas가 켜져 있으면(기본값) 프로젝트 루트마다 `Atlas:` frontmatter로 프로젝트 커넥터 노트(기본 `📚 515 Project Wiki`)에 연결되고 커넥터 목록에도 자동 등록된다 — 모든 프로젝트 위키가 vault 인덱스에서 닿는다. 끄려면 `ai-os init --no-atlas` 또는 `ai-os.json`에서 `"atlas": {"enabled": false}`.
+
 ## CLI 레퍼런스
 
 ```bash
+ai-os init --vault "/path" # 1회성 vault 초기화: 설정 폴더, ai-os.json, Atlas 커넥터
 ai-os setup                # 현재 폴더 연결 (vault·이름·slug 자동 추론)
 ai-os setup --dry-run      # 쓰지 않고 미리보기
 ai-os config set-vault --vault "/path"
