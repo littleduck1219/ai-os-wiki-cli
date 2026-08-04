@@ -34,10 +34,13 @@ AI OS Wiki는 Claude Code / Codex 플러그인 + 작은 CLI다. 각 프로젝트
   <img src="assets/benchmark-recall.svg" width="720" alt="막대 그래프: 순정 에이전트는 프로젝트 사실의 8%(51개 중 4개), AI OS Wiki 연결 시 84%(51개 중 43개) 회상">
 </p>
 
-| | fact recall |
-|---|--:|
-| 순정 에이전트 (코드만) | **8%** (4/51 facts) |
-| **AI OS Wiki 연결** | **84%** (43/51 facts) |
+<div align="center">
+<table>
+  <tr><th></th><th>fact recall</th></tr>
+  <tr><td>순정 에이전트 (코드만)</td><td><strong>8%</strong> (4/51 facts)</td></tr>
+  <tr><td><strong>AI OS Wiki 연결</strong></td><td><strong>84%</strong> (43/51 facts)</td></tr>
+</table>
+</div>
 
 이 격차가 핵심이다: 진행 상황, 과거 결정, 배포 절차, 알려진 이슈는 애초에 코드에 없다. `node benchmarks/run.mjs`로 재현할 수 있다 — 방법론, fixture, 원본 결과는 [benchmarks/](benchmarks/)에 있다.
 

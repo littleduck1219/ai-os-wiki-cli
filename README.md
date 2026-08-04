@@ -34,10 +34,13 @@ Measured with a real headless agent (`claude -p`, Haiku), answering 8 project-co
   <img src="assets/benchmark-recall.svg" width="720" alt="Bar chart: bare agent recalls 8% of project facts (4 of 51), with AI OS Wiki 84% (43 of 51)">
 </p>
 
-| | fact recall |
-|---|--:|
-| bare agent (code only) | **8%** (4/51 facts) |
-| **with AI OS Wiki** | **84%** (43/51 facts) |
+<div align="center">
+<table>
+  <tr><th></th><th>fact recall</th></tr>
+  <tr><td>bare agent (code only)</td><td><strong>8%</strong> (4/51 facts)</td></tr>
+  <tr><td><strong>with AI OS Wiki</strong></td><td><strong>84%</strong> (43/51 facts)</td></tr>
+</table>
+</div>
 
 The gap is the point: status, past decisions, deploy procedure, and known issues are simply not in the code. Reproduce it with `node benchmarks/run.mjs` — method, fixture, and raw results are in [benchmarks/](benchmarks/).
 
