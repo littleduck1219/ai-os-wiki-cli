@@ -1,8 +1,56 @@
 # AI OS Wiki CLI
 
-Obsidian 기반 AI OS/LLM Wiki를 프로젝트에 연결하는 로컬 CLI다.
+Obsidian 기반 AI OS/LLM Wiki를 프로젝트에 연결하는 로컬 CLI이자, Claude Code / Codex 세션에 AI OS Wiki 규칙을 항상 주입하는 플러그인이다.
 
-## Usage
+## Install
+
+플러그인은 세션 시작과 프롬프트 제출 시 작은 Node.js hook을 실행하므로 `node`가 PATH에 있어야 한다.
+
+### Claude Code
+
+Claude Code 안에서 아래 두 명령을 각각 보낸다.
+
+```
+/plugin marketplace add littleduck1219/ai-os-wiki-cli
+```
+
+```
+/plugin install ai-os-wiki@ai-os-wiki
+```
+
+터미널에서 직접 설치하려면:
+
+```bash
+claude plugin marketplace add littleduck1219/ai-os-wiki-cli
+claude plugin install ai-os-wiki@ai-os-wiki
+```
+
+새 세션을 열면 AI OS Wiki 규칙이 자동 적용된다.
+
+### Codex
+
+```bash
+codex plugin marketplace add littleduck1219/ai-os-wiki-cli
+codex plugin add ai-os-wiki@ai-os-wiki
+```
+
+`codex`를 실행해 `/hooks`에서 lifecycle hook을 확인·신뢰한 뒤 새 스레드를 연다.
+
+### After Install
+
+연결할 프로젝트 세션에서 아래처럼 요청한다.
+
+```text
+/ai-os-wiki 이 프로젝트를 AI OS Wiki에 연결해줘
+```
+
+처음 사용하는 컴퓨터에서는 Obsidian vault 위치를 먼저 저장한다.
+
+```bash
+npx github:littleduck1219/ai-os-wiki-cli config set-vault --vault "/path/to/obsidian-vault"
+```
+
+## CLI Usage
 
 패키지를 설치해서 쓰는 형태는 아래를 목표로 한다.
 
@@ -124,76 +172,30 @@ Do not create AI OS Wiki notes with `📄`; it sorts outside the intended hierar
 
 If `CODEX.md`, `CLAUDE.md`, or `GEMINI.md` already exists, the CLI preserves the existing content and only appends or updates a marked `AI OS Wiki Pointer` block.
 
-## Codex Plugin
+## Plugin Architecture
 
-이 repo에는 Codex 세션마다 자동 적용되는 AI OS Wiki 플러그인 정의가 포함되어 있다. Codex 앱에서 사용하려면 이 repo가 Codex 플러그인 마켓플레이스 또는 지원되는 플러그인 소스에 등록되어야 한다.
-
-The plugin injects AI OS Wiki instructions on session start and on each user prompt submission, mirroring the always-on behavior used by ponytail-style plugins. The two lifecycle events use separate hook entry scripts so plugin UIs can present them separately:
+Claude Code와 Codex는 같은 hook 정의(`hooks/claude-codex-hooks.json`)를 공유한다. 플러그인이 설치되면 SessionStart hook이 `AGENTS.md`의 AI OS Wiki 규칙을 세션 컨텍스트로 주입하고, UserPromptSubmit hook이 매 프롬프트마다 이를 유지한다. 두 lifecycle 이벤트는 플러그인 UI에서 따로 표시될 수 있도록 별도 스크립트를 쓴다:
 
 - `hooks/ai-os-wiki-session-start.js`
 - `hooks/ai-os-wiki-prompt-submit.js`
 
 ```text
-.codex-plugin/plugin.json
-.agents/plugins/marketplace.json
-AGENTS.md
-hooks/claude-codex-hooks.json
-hooks/ai-os-wiki-activate.js
-commands/ai-os-wiki.toml
-skills/ai-os-wiki/SKILL.md
+.claude-plugin/plugin.json        # Claude Code 플러그인 매니페스트
+.claude-plugin/marketplace.json   # Claude Code 마켓플레이스 정의
+.codex-plugin/plugin.json         # Codex 플러그인 매니페스트
+.agents/plugins/marketplace.json  # Codex 마켓플레이스 정의
+AGENTS.md                         # 주입되는 AI OS Wiki 규칙
+hooks/claude-codex-hooks.json     # 공용 hook 정의
+commands/ai-os-wiki.toml          # /ai-os-wiki command
+skills/ai-os-wiki/SKILL.md        # ai-os-wiki skill
 ```
 
-핵심은 `hooks/claude-codex-hooks.json`다. Ponytail처럼 플러그인이 설치되면 SessionStart hook이 `AGENTS.md`를 세션 컨텍스트로 주입한다. `/ai-os-wiki` command와 skill은 수동 연결 요청을 위한 보조 진입점이다.
+`/ai-os-wiki` command와 skill은 수동 연결 요청을 위한 보조 진입점이다. 플러그인이 프로젝트 연결에 사용하는 기본 명령은 `ai-os setup`이고, 로컬 `ai-os`가 없으면 `npx github:littleduck1219/ai-os-wiki-cli setup`을 쓴다.
 
-사용 흐름:
-
-1. 이 repo를 GitHub에 push한다.
-2. Codex marketplace에 이 repo를 추가한다.
+로컬 checkout을 한 세션에서만 직접 테스트하려면:
 
 ```bash
-codex plugin marketplace add littleduck1219/ai-os-wiki-cli
-```
-
-3. `ai-os-wiki@ai-os-wiki` 플러그인을 활성화한다.
-
-```bash
-codex plugin add ai-os-wiki@ai-os-wiki
-```
-
-4. 새 Codex 세션을 연다. `AGENTS.md` 지시가 자동 적용된다.
-5. 연결할 프로젝트 세션에서 아래처럼 요청한다.
-
-```text
-/ai-os-wiki 이 프로젝트를 AI OS Wiki에 연결해줘
-```
-
-플러그인이 사용하는 기본 명령:
-
-```bash
-ai-os setup
-```
-
-로컬 `ai-os` 명령이 없으면:
-
-```bash
-npx github:littleduck1219/ai-os-wiki-cli setup
-```
-
-## Claude Code Plugin
-
-Claude Code에서도 같은 hook을 사용한다.
-
-```bash
-claude plugin marketplace add littleduck1219/ai-os-wiki-cli
-claude plugin install ai-os-wiki@ai-os-wiki
-```
-
-설치 후 새 Claude Code 세션을 열면 `.claude-plugin/plugin.json`이 `hooks/claude-codex-hooks.json`을 통해 `AGENTS.md`의 AI OS Wiki 규칙을 주입한다.
-
-한 세션에서만 직접 테스트하려면:
-
-```bash
-claude --plugin-dir /Users/littleduck/Documents/LLM\ Systrem
+claude --plugin-dir /path/to/ai-os-wiki-cli
 ```
 
 ## Record An Issue
@@ -215,14 +217,7 @@ This creates a `📘` issue note without a date prefix under `90 Operations/Issu
 
 ## Publish
 
-GitHub remote를 만든 뒤:
-
-```bash
-git remote add origin https://github.com/littleduck1219/ai-os-wiki-cli.git
-git add README.md package.json bin scripts .gitignore
-git commit -m "Initial AI OS wiki CLI"
-git push -u origin main
-```
+플러그인 배포는 `main`에 push하면 끝이다. 마켓플레이스가 이 repo를 직접 바라본다.
 
 npm 배포 전 확인:
 
