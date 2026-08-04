@@ -1,0 +1,403 @@
+{
+  "date": "2026-08-04",
+  "model": "haiku",
+  "runs": 3,
+  "summary": {
+    "baseline": {
+      "correct": 4,
+      "total": 51,
+      "recall": 8
+    },
+    "ai-os": {
+      "correct": 43,
+      "total": 51,
+      "recall": 84
+    }
+  },
+  "results": [
+    {
+      "arm": "baseline",
+      "id": "current-work",
+      "run": 0,
+      "correct": 0,
+      "total": 3,
+      "answer": "میں نہیں جانتا۔ یہ پروجیکٹ `orbit-notes` (ایک چھوٹا سا notes API) ہے، لیکن یہ AI OS Wiki سے منسلک نہیں ہے، اور کوئی Session Brief یا Active Context ریکارڈ نہیں ہے۔\n\nکیا آپ یہ پروجیکٹ AI OS Wiki سے منسلک کرنا چاہیں گے؟ میں `/ai-os-wiki` استعمال کر کے اسے ترتیب دے سکتا ہوں۔"
+    },
+    {
+      "arm": "baseline",
+      "id": "current-work",
+      "run": 1,
+      "correct": 0,
+      "total": 3,
+      "answer": "모릅니다. 이 프로젝트는 \"orbit-notes\"라는 간단한 notes API(v0.3.0)로 보이며 기본 기능(GET/POST 엔드포인트, 파일 기반 저장소)이 구현되어 있지만, AI OS Wiki 포인터나 git 히스토리가 없어서 현재 진행 상황을 알 수 없습니다.\n\nAI OS Wiki를 연결하거나 현재 작업 상태에 대해 알려주시면 더 정확한 답변을 드릴 수 있습니다."
+    },
+    {
+      "arm": "baseline",
+      "id": "current-work",
+      "run": 2,
+      "correct": 0,
+      "total": 3,
+      "answer": "혼자 모릅니다. 프로젝트는 \"orbit-notes\"라는 소규모 API(버전 0.3.0)로 보이지만, 현재 작업 내용을 설명하는 AI OS Wiki 포인터나 프로젝트 문서가 없습니다. \n\n작업 진행 상황을 알려주시면 안내할 수 있습니다."
+    },
+    {
+      "arm": "baseline",
+      "id": "why-sqlite",
+      "run": 0,
+      "correct": 0,
+      "total": 2,
+      "answer": "I don't know. The current project code doesn't mention this decision—it's using JSON file storage, not SQLite or Postgres. There's no documentation or decision log in the visible project files that explains a database choice."
+    },
+    {
+      "arm": "baseline",
+      "id": "why-sqlite",
+      "run": 1,
+      "correct": 0,
+      "total": 2,
+      "answer": "프로젝트에 그 정보가 없습니다. 실제로 이 프로젝트는 SQLite나 Postgres를 사용하지 않으며, JSON 파일 기반 스토리지를 사용합니다 (`notes.json`). SQLite vs Postgres 선택에 대한 문서나 설명이 프로젝트 내에는 없습니다."
+    },
+    {
+      "arm": "baseline",
+      "id": "why-sqlite",
+      "run": 2,
+      "correct": 0,
+      "total": 2,
+      "answer": "I do not know from the current project context. The README doesn't explain the database choice, and I don't see any decision log or documentation file that explains why SQLite was chosen over Postgres."
+    },
+    {
+      "arm": "baseline",
+      "id": "why-no-framework",
+      "run": 0,
+      "correct": 0,
+      "total": 2,
+      "answer": "I don't see an explicit explanation in the project. However, the project is deliberately described as \"Tiny notes API\" with only 2 simple endpoints (GET/POST /notes) and minimal logic (~30 lines of server code). Using raw `node:http` for such a small, focused API avoids the overhead of a framework like Express when plain Node.js HTTP is sufficient.\n\nIf there's a specific design rationale documented elsewhere (in your AI OS Wiki or project notes), I haven't found it in the local files."
+    },
+    {
+      "arm": "baseline",
+      "id": "why-no-framework",
+      "run": 1,
+      "correct": 0,
+      "total": 2,
+      "answer": "I don't see an explicit explanation in the project docs. However, based on the code: this is a \"tiny notes API\" with just 2 simple routes (GET/POST `/notes`). Using raw `node:http` avoids the overhead of a framework—the entire server is one `createServer` callback. Express would add unnecessary complexity and a dependency for what the stdlib handles fine."
+    },
+    {
+      "arm": "baseline",
+      "id": "why-no-framework",
+      "run": 2,
+      "correct": 0,
+      "total": 2,
+      "answer": "I don't know the explicit reason from project documentation—there's no CODEX.md or documented rationale.\n\nHowever, the code and README suggest it: this is described as a **\"Tiny notes API\"** with just two endpoints. Raw `node:http` keeps dependencies minimal and overhead low, which aligns with that minimalist intent. For such a simple API, Express would be unnecessary overhead.\n\nIf you need the actual reasoning, check with the project owner or look for ADRs/decision logs elsewhere."
+    },
+    {
+      "arm": "baseline",
+      "id": "deploy",
+      "run": 0,
+      "correct": 0,
+      "total": 2,
+      "answer": "I don't know. The project has no deployment configuration, CI/CD pipeline, or infrastructure files visible in the repo (no Dockerfile, Vercel config, GitHub Actions, etc.). The README only documents local development (`npm start`). The server accepts a `PORT` environment variable, but there's no documentation about production deployment or where it runs."
+    },
+    {
+      "arm": "baseline",
+      "id": "deploy",
+      "run": 1,
+      "correct": 0,
+      "total": 2,
+      "answer": "I don't know. This project doesn't have AI OS Wiki documentation set up, and the README and package.json don't contain deployment information — only a local `npm start` command. There are no Docker files, deployment scripts, or CI/CD configuration visible."
+    },
+    {
+      "arm": "baseline",
+      "id": "deploy",
+      "run": 2,
+      "correct": 0,
+      "total": 2,
+      "answer": "I don't know. This project (orbit-notes) is a small Node.js API with no deployment configuration visible in the repository. The server listens on a PORT environment variable (default 8787) and starts with `npm start`, but there's no Dockerfile, CI/CD pipeline, or deployment documentation showing where or how it runs in production."
+    },
+    {
+      "arm": "baseline",
+      "id": "logs",
+      "run": 0,
+      "correct": 0,
+      "total": 1,
+      "answer": "I don't know. This project doesn't have documented production logging instructions. The README only covers local startup (`npm start`). You may need to check your deployment infrastructure (hosting provider dashboard, monitoring tools like Datadog/New Relic/CloudWatch, or your CI/CD pipeline documentation) for where logs are stored."
+    },
+    {
+      "arm": "baseline",
+      "id": "logs",
+      "run": 1,
+      "correct": 0,
+      "total": 1,
+      "answer": "I don't know. This project (orbit-notes, a simple notes API) has no production logging infrastructure configured—the server only logs to stdout on startup. You'd need to ask your ops team how logs are collected from deployed services, or add a logging setup (e.g., structured logging to a service like Datadog, CloudWatch, or ELK)."
+    },
+    {
+      "arm": "baseline",
+      "id": "logs",
+      "run": 2,
+      "correct": 0,
+      "total": 1,
+      "answer": "이 프로젝트(orbit-notes)에는 프로덕션 로그 조회에 대한 문서가 없습니다. README와 package.json에는 로컬 실행만 기록되어 있습니다.\n\n프로덕션 배포 방식이나 로깅 설정에 대한 정보가 없으므로 모릅니다. 다음 정보를 확인하면 도움이 될 것 같습니다:\n\n- 이 서비스가 어디에 배포되어 있는지 (클라우드 플랫폼, 서버 등)\n- 사용 중인 로깅 솔루션 (CloudWatch, Datadog, ELK 스택 등)\n- 프로덕션 배포 가이드나 Runbook 문서"
+    },
+    {
+      "arm": "baseline",
+      "id": "known-bug",
+      "run": 0,
+      "correct": 0,
+      "total": 3,
+      "answer": "I don't know of any documented known bugs in this project. \n\nI checked for issue documentation, README notes, code comments, and the source files themselves. There's no mention of known issues or bugs. The project is a simple notes API (`orbit-notes`) with just two endpoints: `GET /notes` (with pagination) and `POST /notes` (to add a note).\n\nIf you're aware of a bug or have encountered an issue, I can help investigate it."
+    },
+    {
+      "arm": "baseline",
+      "id": "known-bug",
+      "run": 1,
+      "correct": 2,
+      "total": 3,
+      "answer": "میں نہ تو کوئی AI OS Wiki دیکھ رہا ہوں اور نہ ہی کوئی git تاریخ جو معروف bugs کو دستاویز کرتی ہو۔ \n\n**کوڈ میں جو بگ نظر آتے ہیں:**\n\nلائن 16 پر، `JSON.parse(body)` غیر صحیح JSON یا ادھورا ڈیٹا کے ساتھ ناکام ہو سکتا ہے۔ یہ کوئی error handling نہیں ہے۔ اگر کلائنٹ invalid JSON بھیجے تو سرور کریش ہو جائے گا۔\n\nکیا آپ کو معروف bugs کے بارے میں مزید معلومات ہے یا کسی مخصوص مسئلے کی طرف اشارہ کر رہے ہیں؟"
+    },
+    {
+      "arm": "baseline",
+      "id": "known-bug",
+      "run": 2,
+      "correct": 0,
+      "total": 3,
+      "answer": "I don't see any documented bugs in this project. There's no `.ai-os/CODEX.md`, bug tracker, or issue documentation visible. \n\nWhat's the bug you're seeing? I can help debug it."
+    },
+    {
+      "arm": "baseline",
+      "id": "next-task",
+      "run": 0,
+      "correct": 0,
+      "total": 2,
+      "answer": "I don't know the next planned task for this project. There's no AI OS Wiki CODEX.md file connected, and I don't have prior context about this project's goals or roadmap. Could you share what you're working on or point me to your project planning docs?"
+    },
+    {
+      "arm": "baseline",
+      "id": "next-task",
+      "run": 1,
+      "correct": 0,
+      "total": 2,
+      "answer": "알 수 없습니다. 이 프로젝트에는 AI OS Wiki 설정이 없으며, 다음 계획된 작업에 대한 문서화된 정보가 없습니다."
+    },
+    {
+      "arm": "baseline",
+      "id": "next-task",
+      "run": 2,
+      "correct": 0,
+      "total": 2,
+      "answer": "노프로젝트에 대한 계획된 작업 정보가 없습니다. 메모리 시스템이 아직 설정되어 있지 않고, AI OS Wiki 포인터도 찾을 수 없습니다. 프로젝트의 README나 구성 파일을 확인하면 더 자세히 알 수 있을 것 같습니다."
+    },
+    {
+      "arm": "baseline",
+      "id": "before-public",
+      "run": 0,
+      "correct": 1,
+      "total": 2,
+      "answer": "모르겠습니다. 프로젝트 파일을 확인했으나 외부 노출 전 필수 요구사항에 대한 문서나 주석이 없습니다. \n\n이 API는 현재 인증 없이 HTTP로 작동하는데, 일반적으로는 **인증 추가**와 **HTTPS 지원**이 외부 노출 전 필수입니다. 다만 이 프로젝트의 구체적인 요구사항은 문서화되어 있지 않습니다."
+    },
+    {
+      "arm": "baseline",
+      "id": "before-public",
+      "run": 1,
+      "correct": 1,
+      "total": 2,
+      "answer": "이 프로젝트는 인증과 인가 메커니즘이 없습니다. API를 외부 네트워크에 노출하기 전에 **인증(Authentication)과 권한 부여(Authorization)**가 추가되어야 합니다. 현재 코드는 누구나 모든 노트를 읽고 작성할 수 있습니다."
+    },
+    {
+      "arm": "baseline",
+      "id": "before-public",
+      "run": 2,
+      "correct": 0,
+      "total": 2,
+      "answer": "I don't know from this project's context. There's no CODEX.md, CLAUDE.md, or project documentation that specifies requirements for external exposure.\n\nHowever, looking at the code itself: the server currently uses HTTP only with no authentication, CORS headers, or input validation. At minimum, HTTPS/TLS and authentication would be required before exposing it outside a home network."
+    },
+    {
+      "arm": "ai-os",
+      "id": "current-work",
+      "run": 0,
+      "correct": 2,
+      "total": 3,
+      "answer": "프로젝트는 **SQLite 마이그레이션 중간 단계**에 있습니다.\n\n**현재 상태:**\n- JSON 파일 저장소를 SQLite로 마이그레이션 중 (진행도: 약 50%)\n- SQLite 스키마는 설계 완료, 쓰기 경로는 아직 시작 안 됨\n\n**다음 작업:**\n1. SQLite 마이그레이션 완료 (`store.mjs` 수정)\n2. `DELETE /notes/:id` 엔드포인트 추가\n\n**주의:** JSON 저장소는 지원 중단되었으므로 새 기능을 추가하면 안 됨"
+    },
+    {
+      "arm": "ai-os",
+      "id": "current-work",
+      "run": 1,
+      "correct": 3,
+      "total": 3,
+      "answer": "**Current work:** Migrating storage from JSON file store to SQLite. The schema is designed, but the write path hasn't started yet — roughly halfway done.\n\n**Progress:** Last session fixed a pagination bug. The next task is to wire in the SQLite implementation to replace `store.mjs`, then add a `DELETE /notes/:id` endpoint."
+    },
+    {
+      "arm": "ai-os",
+      "id": "current-work",
+      "run": 2,
+      "correct": 2,
+      "total": 3,
+      "answer": "The project is **orbit-notes**, a note-taking app. Currently working on a **SQLite migration** to replace the JSON file store — roughly halfway done. The schema is designed but the write path hasn't been implemented yet. Next: complete the migration, then add a `DELETE /notes/:id` endpoint."
+    },
+    {
+      "arm": "ai-os",
+      "id": "why-sqlite",
+      "run": 0,
+      "correct": 2,
+      "total": 2,
+      "answer": "SQLite was chosen because the app is deployed on a single home server (`duckbox`) with no separate database server to operate. The data fits comfortably in one file, so Postgres was rejected as unnecessary operational overhead for a one-host deployment."
+    },
+    {
+      "arm": "ai-os",
+      "id": "why-sqlite",
+      "run": 1,
+      "correct": 2,
+      "total": 2,
+      "answer": "SQLite was chosen because the app deploys on a single home server (`duckbox`), eliminating the need to operate a separate database server. The data fits comfortably in one file, making Postgres unnecessary overhead for a one-host deployment."
+    },
+    {
+      "arm": "ai-os",
+      "id": "why-sqlite",
+      "run": 2,
+      "correct": 2,
+      "total": 2,
+      "answer": "According to the Decision Log: **SQLite was chosen because the app deploys to a single home server (`duckbox`), so there's no need for a separate database server to operate. The data fits comfortably in one file. Postgres was rejected as unnecessary operational overhead for a single-host app.**"
+    },
+    {
+      "arm": "ai-os",
+      "id": "why-no-framework",
+      "run": 0,
+      "correct": 2,
+      "total": 2,
+      "answer": "프로젝트 결정 로그에 따르면, **제로 디펜던시 정책(zero-dependency policy)** 때문입니다. 배포 시 `node_modules`가 전혀 필요하지 않도록 하기 위해 Express 대신 표준 라이브러리의 `node:http`을 선택했습니다."
+    },
+    {
+      "arm": "ai-os",
+      "id": "why-no-framework",
+      "run": 1,
+      "correct": 2,
+      "total": 2,
+      "answer": "**Zero-dependency policy.** The project explicitly chose stdlib `node:http` to deploy with no `node_modules` — Express was rejected to keep the deployment footprint minimal (important for a home server deployment)."
+    },
+    {
+      "arm": "ai-os",
+      "id": "why-no-framework",
+      "run": 2,
+      "correct": 2,
+      "total": 2,
+      "answer": "이 프로젝트는 **제로 의존성 정책** 때문에 Express 같은 웹 프레임워크 대신 표준 라이브러리 `node:http`을 사용합니다. 배포 시 `node_modules`이 전혀 필요 없도록 하기 위함입니다. Express는 명시적으로 거부되었습니다."
+    },
+    {
+      "arm": "ai-os",
+      "id": "deploy",
+      "run": 0,
+      "correct": 2,
+      "total": 2,
+      "answer": "Deployed by `rsync` to the home server `duckbox` and runs under systemd as `orbit-notes.service`. Restart after deploy with `sudo systemctl restart orbit-notes`."
+    },
+    {
+      "arm": "ai-os",
+      "id": "deploy",
+      "run": 1,
+      "correct": 2,
+      "total": 2,
+      "answer": "배포: `rsync`를 통해 프로젝트 디렉토리를 홈 서버 `duckbox`로 배포합니다.\n\n실행 환경: `duckbox` 서버에서 systemd 유닛 `orbit-notes.service`로 실행 중입니다.\n\n재시작: `sudo systemctl restart orbit-notes`"
+    },
+    {
+      "arm": "ai-os",
+      "id": "deploy",
+      "run": 2,
+      "correct": 2,
+      "total": 2,
+      "answer": "**Deployment:** The project is deployed to a home server named `duckbox` via `rsync` of the project directory. It runs as a systemd unit (`orbit-notes.service`), and restarted after deploy with `sudo systemctl restart orbit-notes`. Production logs are viewable via `journalctl -u orbit-notes -f` on `duckbox`."
+    },
+    {
+      "arm": "ai-os",
+      "id": "logs",
+      "run": 0,
+      "correct": 1,
+      "total": 1,
+      "answer": "Production logs: `journalctl -u orbit-notes -f` on `duckbox`."
+    },
+    {
+      "arm": "ai-os",
+      "id": "logs",
+      "run": 1,
+      "correct": 1,
+      "total": 1,
+      "answer": "프로덕션 로그를 보려면 `duckbox` 호스트에서 다음 명령을 실행하세요:\n\n```bash\njournalctl -u orbit-notes -f\n```\n\n이 명령은 `orbit-notes` systemd 서비스의 실시간 로그를 표시합니다."
+    },
+    {
+      "arm": "ai-os",
+      "id": "logs",
+      "run": 2,
+      "correct": 1,
+      "total": 1,
+      "answer": "To view production logs for this service, run:\n\n```bash\njournalctl -u orbit-notes -f\n```\n\non the `duckbox` server. (The service runs under systemd as `orbit-notes.service`.)"
+    },
+    {
+      "arm": "ai-os",
+      "id": "known-bug",
+      "run": 0,
+      "correct": 3,
+      "total": 3,
+      "answer": "Yes. There's a known open bug:\n\n**Empty POST body crash** — `POST /notes` with empty or invalid JSON body crashes the entire server. The `JSON.parse(body)` call in `server.mjs` lacks a try/catch, so the exception escapes the request handler. Planned fix: wrap it in try/catch and return HTTP 400."
+    },
+    {
+      "arm": "ai-os",
+      "id": "known-bug",
+      "run": 1,
+      "correct": 3,
+      "total": 3,
+      "answer": "**Yes.** There is one known open bug:\n\n**Empty POST body crash** — `POST /notes` with an empty or invalid JSON body crashes the whole server. The issue is that `JSON.parse(body)` in `server.mjs` is not wrapped in try/catch. **Trigger:** send a POST request to `/notes` without a valid JSON body.\n\n**Workaround:** clients must validate the body before sending. **Fix planned:** wrap in try/catch to return HTTP 400."
+    },
+    {
+      "arm": "ai-os",
+      "id": "known-bug",
+      "run": 2,
+      "correct": 3,
+      "total": 3,
+      "answer": "Yes. **Empty POST body crash** on `POST /notes`:\n\n- **Trigger:** Sending a POST request with an empty or invalid JSON body to `/notes`\n- **Issue:** `JSON.parse(body)` in `server.mjs` is not wrapped in try/catch, so the exception crashes the whole server\n- **Planned fix:** Wrap it in try/catch to return HTTP 400 instead\n\nWorkaround: clients must validate the body before sending."
+    },
+    {
+      "arm": "ai-os",
+      "id": "next-task",
+      "run": 0,
+      "correct": 2,
+      "total": 2,
+      "answer": "The next planned task is to **finish the SQLite migration** by replacing the JSON store in `store.mjs`, followed by adding a `DELETE /notes/:id` endpoint. The migration is roughly halfway done (schema is designed but write path not yet started)."
+    },
+    {
+      "arm": "ai-os",
+      "id": "next-task",
+      "run": 1,
+      "correct": 2,
+      "total": 2,
+      "answer": "The next planned task is to **finish the SQLite migration** (replace the JSON store in `store.mjs`), followed by adding a `DELETE /notes/:id` endpoint."
+    },
+    {
+      "arm": "ai-os",
+      "id": "next-task",
+      "run": 2,
+      "correct": 0,
+      "total": 2,
+      "answer": "다음 계획된 작업은 **API를 가정 네트워크 외부에 노출하기 전에 bearer-token 인증 추가**입니다. 그때까지는 API가 내부 전용으로 유지되어야 합니다."
+    },
+    {
+      "arm": "ai-os",
+      "id": "before-public",
+      "run": 0,
+      "correct": 0,
+      "total": 2,
+      "answer": "I do not know. The referenced AI OS Wiki documents (`orbit-notes*`) are not present in this project directory, so I cannot read the project context needed to answer your question about API exposure requirements.\n\nTo help you, I can review the actual project files (README.md, server.mjs, etc.) if you'd like to explain the context, or if you have the wiki documents available elsewhere."
+    },
+    {
+      "arm": "ai-os",
+      "id": "before-public",
+      "run": 1,
+      "correct": 2,
+      "total": 2,
+      "answer": "Bearer-token authentication must be added before exposing the API outside the home network (from Follow-ups). Additionally, rate limiting should be implemented (deferred in Decision Log as not needed while internal-only)."
+    },
+    {
+      "arm": "ai-os",
+      "id": "before-public",
+      "run": 2,
+      "correct": 0,
+      "total": 2,
+      "answer": "Rate limiting must be implemented. The Decision Log notes that rate limiting was deferred \"while the API is only reachable inside the home network,\" implying it becomes necessary when exposed outside."
+    }
+  ]
+}

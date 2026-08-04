@@ -1,0 +1,67 @@
+[
+  {
+    "id": "current-work",
+    "question": "What is currently being worked on in this project, and how far along is it?",
+    "facts": [
+      "storage is being migrated from the JSON file store to SQLite",
+      "store.mjs still uses the old JSON implementation",
+      "the migration is about halfway done (schema decided, write path not started)"
+    ]
+  },
+  {
+    "id": "why-sqlite",
+    "question": "Why was SQLite chosen as the target database instead of Postgres?",
+    "facts": [
+      "deployment is a single home server, so no separate database server to operate",
+      "Postgres was rejected as operational overhead for a one-host app"
+    ]
+  },
+  {
+    "id": "why-no-framework",
+    "question": "Why does this project use the raw node:http module instead of a web framework like Express?",
+    "facts": [
+      "a zero-dependency policy: deploys should need no node_modules",
+      "Express was explicitly rejected"
+    ]
+  },
+  {
+    "id": "deploy",
+    "question": "How is this project deployed to production, and where does it run?",
+    "facts": [
+      "deployed by rsync to the home server duckbox",
+      "runs under systemd as the unit orbit-notes.service"
+    ]
+  },
+  {
+    "id": "logs",
+    "question": "How do I view production logs for this service?",
+    "facts": [
+      "journalctl -u orbit-notes on the server duckbox"
+    ]
+  },
+  {
+    "id": "known-bug",
+    "question": "Is there any known bug in this API right now? What triggers it?",
+    "facts": [
+      "POST /notes with an empty or invalid JSON body crashes the server",
+      "JSON.parse in server.mjs is not wrapped in try/catch",
+      "the planned fix is a try/catch returning HTTP 400"
+    ]
+  },
+  {
+    "id": "next-task",
+    "question": "What is the next planned task for this project?",
+    "facts": [
+      "finish the SQLite migration in store.mjs",
+      "then add a DELETE /notes/:id endpoint"
+    ]
+  },
+  {
+    "id": "before-public",
+    "question": "What must happen before this API can be exposed outside the home network?",
+    "facts": [
+      "bearer-token authentication must be added",
+      "until then the API must stay internal-only"
+    ]
+  }
+]
