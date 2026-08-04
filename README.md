@@ -30,6 +30,10 @@ With the wiki connected:
 
 Measured with a real headless agent (`claude -p`, Haiku), answering 8 project-context questions in a fixture repo where the answers live only in the wiki — the same situation as returning to a project after a week. Answers are graded fact-by-fact by a judge model (3 runs per question per arm, 51 gradable facts per arm).
 
+<p align="center">
+  <img src="assets/benchmark-recall.svg" width="720" alt="Bar chart: bare agent recalls 8% of project facts (4 of 51), with AI OS Wiki 84% (43 of 51)">
+</p>
+
 | | fact recall |
 |---|--:|
 | bare agent (code only) | **8%** (4/51 facts) |

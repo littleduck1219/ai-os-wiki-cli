@@ -30,6 +30,10 @@ AI OS Wiki는 Claude Code / Codex 플러그인 + 작은 CLI다. 각 프로젝트
 
 실제 headless 에이전트(`claude -p`, Haiku)로 측정했다. 답이 위키에만 존재하는 fixture repo에서 프로젝트 컨텍스트 질문 8개를 던지고 — 일주일 만에 프로젝트로 돌아온 상황과 같다 — 답변을 judge 모델이 사실 단위로 채점한다 (arm당 질문별 3회 실행, arm당 채점 대상 사실 51개).
 
+<p align="center">
+  <img src="assets/benchmark-recall.svg" width="720" alt="막대 그래프: 순정 에이전트는 프로젝트 사실의 8%(51개 중 4개), AI OS Wiki 연결 시 84%(51개 중 43개) 회상">
+</p>
+
 | | fact recall |
 |---|--:|
 | 순정 에이전트 (코드만) | **8%** (4/51 facts) |
